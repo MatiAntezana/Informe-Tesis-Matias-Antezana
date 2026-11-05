@@ -1,0 +1,16 @@
+\section{Diseño general y separación de los datos}
+\label{sec:metodo-datos}
+El procedimiento parte de un conjunto de consultas y respuestas de referencia del dominio que se desea abordar. Antes del entrenamiento, los registros se reúnen en un formato común, se eliminan consultas duplicadas y se conserva su procedencia para poder vincular cada rúbrica con la respuesta de la que se extrajo.
+
+En el esquema con una fuente común, el conjunto destinado al aprendizaje se divide en dos particiones: una destinada a la adaptación supervisada y otra reservada para construir las rúbricas y entrenar mediante GRPO. Así, si $\mathcal{D}$ representa el conjunto preparado, la separación se expresa como
+\begin{equation}
+\mathcal{D}=\mathcal{D}_{\mathrm{SFT}}\cup\mathcal{D}_{\mathrm{reserva}},
+\qquad
+\mathcal{D}_{\mathrm{SFT}}\cap\mathcal{D}_{\mathrm{reserva}}=\varnothing.
+\label{eq:metodo-separacion}
+\end{equation}
+La primera partición permite adaptar el modelo siguiendo el procedimiento de la sección~\ref{sec:marco-sft}, mientras que las respuestas de la reserva aportan los conceptos utilizados para construir la señal de recompensa. Esta separación evita utilizar las mismas consultas en ambas etapas, aunque no garantiza por sí sola la ausencia de preguntas semánticamente similares.
+
+Cuando se parte de un checkpoint supervisado existente, las fuentes de SFT y de GRPO pueden ser distintas, como ocurre con SFT45k y los datos procedentes de RaR. En ese caso, su independencia debe comprobarse sobre los registros disponibles, sin deducirla únicamente del nombre de las fuentes. Las proporciones de reparto son decisiones experimentales y no una condición fija de la metodología.
+
+Por último, se reservan conjuntos de validación y prueba fuera del aprendizaje, mientras que la evaluación externa utiliza consultas y criterios independientes de los empleados en el entrenamiento, de modo que permite examinar las respuestas sin las ayudas proporcionadas durante GRPO. Las fuentes y las proporciones del particionado se detallan en la sección~\ref{sec:datos-experimentales}, mientras que las arquitecturas y el entrenamiento se reúnen en la sección~\ref{sec:metodo-entrenamiento}.

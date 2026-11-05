@@ -1,0 +1,13 @@
+\subsection{Diferencias entre aprendizaje supervisado y aprendizaje por refuerzo}
+\label{sec:sft-rl}
+La diferencia entre ambos procedimientos se encuentra en la señal que orienta la actualización. En el ajuste fino supervisado, desarrollado en el sección~\ref{sec:marco-sft}, la respuesta de referencia determina los tokens que intervienen en la pérdida de la ecuación \ref{eq:sft}, mientras que en el entrenamiento por refuerzo se evalúan respuestas producidas por la propia política. Esa evaluación proporciona una señal de calidad, pero no necesariamente indica qué token debería haberse generado en cada posición, por lo que el algoritmo debe relacionarla con las probabilidades de las acciones tomadas~\cite{ouyang2022instructgpt}. La figura \ref{fig:sft-rl} permite comparar el origen de las respuestas y el cálculo utilizado para actualizar el modelo.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/02-marco-teorico/04-ppo-grpo/rl-comparacion-sft}
+\caption{Comparación entre el ajuste fino supervisado y el aprendizaje por refuerzo.}
+\label{fig:sft-rl}
+\end{figure}
+
+Ambos procedimientos pueden combinarse cuando el SFT proporciona un comportamiento inicial adecuado y el refuerzo busca ajustar propiedades que la reproducción de demostraciones no controla de manera explícita. Sin embargo, esta secuencia es una decisión de diseño y no una condición general del aprendizaje por refuerzo, como muestra el entrenamiento de DeepSeek-R1-Zero directamente sobre un modelo base~\cite{deepseek2025r1}. La comparación entre SFT y RL debe considerar, por tanto, el punto de partida, los datos y la recompensa utilizados.
+

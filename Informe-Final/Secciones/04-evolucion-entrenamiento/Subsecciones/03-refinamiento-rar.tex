@@ -1,0 +1,23 @@
+\section{Refinamiento del entrenamiento a partir de RaR}
+\label{sec:refinamiento-entrenamiento-rar}
+\subsection{Adaptación supervisada de Qwen2.5-3B}
+El registro de SFT45k contiene 2.870 actualizaciones y 20 evaluaciones de validación. La pérdida de validación pasa de 1,195 en la primera evaluación, realizada en el paso 150, a 1,021 al terminar el entrenamiento. La figura~\ref{fig:sft45k-curvas} muestra ese recorrido con el mismo suavizado de 25 registros utilizado para visualizar la pérdida de entrenamiento del SFT inicial.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/04-entrenamiento/sft45k}
+\caption{Pérdidas de entrenamiento y validación de SFT45k.}
+\label{fig:sft45k-curvas}
+\end{figure}
+
+\subsection{Recompensa durante la retirada de ayudas}
+Los registros del piloto con datos de RaR cubren los 1.500 pasos de GRPO, distribuidos en cinco etapas de 300 consultas. La figura~\ref{fig:grpo-piloto-curvas} relaciona la recompensa de entrenamiento con la validación sin ayudas; las líneas verticales indican los cambios de etapa y los porcentajes superiores representan las ayudas conservadas. La curva de entrenamiento utiliza la media móvil exponencial guardada por la implementación.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/04-entrenamiento/grpo-piloto}
+\caption{Recompensa de GRPO y validación sin ayudas durante el piloto.}
+\label{fig:grpo-piloto-curvas}
+\end{figure}
+
+La recompensa media de entrenamiento es 0,924 durante la etapa con todas las ayudas y 0,269 durante la etapa sin ellas. La validación, realizada siempre sin asistencia, pasa de 0,354 antes de entrenar a 0,305 en el paso 1.500, con variaciones entre etapas. Por tanto, la recompensa elevada de los tramos asistidos no se traduce en un aumento de la recompensa de validación al finalizar esta corrida. Estos valores corresponden al juez y a las rúbricas del piloto; la comparación externa con RaR se trata en la sección~\ref{sec:comparacion-rar}.

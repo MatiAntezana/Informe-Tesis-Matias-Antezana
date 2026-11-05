@@ -1,0 +1,45 @@
+\section{Datos y particiones para las dos etapas}
+\label{sec:datos-experimentales}
+\subsection{Pruebas del método de adaptación a dominios abiertos}
+\label{sec:protocolo-primera-etapa}
+La aplicación estudiada utiliza consultas médicas abiertas de HealthCareMagic e iCliniq, recopiladas en ChatDoctor~\cite{li2023chatdoctor}. Sus autores describen un filtrado automático de conversaciones demasiado breves y una revisión manual de respuestas con errores en HealthCareMagic, junto con la eliminación de información identificatoria y la corrección gramatical. Para iCliniq, señalan una selección aleatoria estratificada por especialidades y la eliminación de información identificatoria. Estas medidas respaldan la procedencia y la curación de los datos, aunque no acreditan una certificación clínica individual de todas las respuestas, por lo que en este trabajo se reutilizan como referencias de supervisión sin una validación clínica adicional de las rúbricas derivadas.
+
+La preparación reúne ambas fuentes en un esquema común de consulta, respuesta y procedencia, elimina consultas duplicadas entre las fuentes y ordena los registros mediante una mezcla reproducible con semilla 42. Sobre esa lista se reserva el 90\% para SFT y el 10\% restante para la extracción de criterios y el entrenamiento posterior, siguiendo la separación definida en la ecuación~\ref{eq:metodo-separacion}. El código conserva el índice global de cada registro y verifica que las particiones no compartan índices, aunque esta comprobación no permite descartar coincidencias con los datos de preentrenamiento del modelo.
+
+El conjunto central de GRPO contiene 500 consultas con sus criterios compilados y conserva los índices que permiten vincularlas con la reserva. Este conjunto pertenece al entrenamiento y es independiente de la muestra de HealthBench utilizada para la evaluación externa.
+
+
+\subsection{Comparación con un trabajo externo}
+\label{sec:protocolo-segunda-etapa}
+\subsubsection{Checkpoint supervisado y procedencia de sus datos}
+El conjunto de entrenamiento del checkpoint SFT45k reúne 45.000 muestras de cuatro fuentes. La tabla~\ref{tab:sft45k-fuentes} presenta su composición, mientras que el modelo y su adaptación se describen en la sección~\ref{sec:metodo-arquitecturas}.
+
+\begin{table}[htbp]
+\centering
+\caption{Fuentes del entrenamiento supervisado SFT45k.}
+\label{tab:sft45k-fuentes}
+\begin{tabular}{cc}
+\toprule
+Fuente & Muestras de entrenamiento \\
+\midrule
+MuSeR & 27.000 \\
+HealthCareMagic & 10.515 \\
+MedQuad & 6.750 \\
+iCliniq & 735 \\
+\midrule
+Total & 45.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Estas fuentes pertenecen a SFT. Las preguntas y respuestas procedentes de RaR se incorporan después para construir las rúbricas y preparar GRPO, por lo que no deben confundirse con la composición de SFT45k. La comprobación de coincidencias entre las fuentes debe realizarse sobre los registros efectivos antes de interpretar su separación como independencia experimental.
+
+\subsubsection{Datos del piloto}
+El piloto utiliza un subconjunto de 300 muestras de entrenamiento y 50 de validación, cada una con su rúbrica y su revisión, procedentes de los datos de RaR.
+
+La arquitectura y la configuración de entrenamiento del piloto se detallan en la sección~\ref{sec:metodo-entrenamiento}, mientras que la composición de SFT45k y el subconjunto de RaR definen las fuentes utilizadas en esta etapa.
+
+
+\subsection{Experimento final previsto}
+\label{sec:protocolo-final-previsto}
+El diseño final contempla reservar validación y prueba fuera del aprendizaje y dividir el conjunto restante en un 50\% para SFT y un 50\% para GRPO. Las rúbricas se extraerán de las respuestas de referencia de esta segunda mitad. Esta configuración es una propuesta y debe distinguirse tanto del checkpoint SFT45k como del piloto de 300 muestras de entrenamiento y 50 de validación. Su ejecución y evaluación permanecen pendientes, y el reparto propuesto no se presenta como una reproducción del protocolo de RaR.

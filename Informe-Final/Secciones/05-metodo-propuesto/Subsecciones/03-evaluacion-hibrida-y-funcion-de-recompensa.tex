@@ -1,0 +1,32 @@
+\section{Evaluación de criterios y formulaciones de recompensa}
+\label{sec:metodo-recompensa}
+\subsection{Evaluación híbrida y recompensa de la primera etapa}
+La evaluación inicial comienza con un procedimiento determinista que normaliza la respuesta y busca las entidades dentro de sus oraciones. Una coincidencia puede obtenerse mediante una expresión exacta o mediante una cobertura suficiente de grupos de términos y anclas, utilizando los lemas y los alias previstos para cada concepto. Este procedimiento reduce el costo de evaluación y permite registrar qué términos respaldan cada detección, aunque puede producir falsos negativos ante paráfrasis y falsos positivos cuando una expresión aparece en un contexto inadecuado.
+
+Para ampliar la cobertura, las entidades no detectadas por código se envían a un juez semántico junto con la consulta, la respuesta generada y la información asociada al criterio. El juez debe señalar si el concepto está presente y aportar un fragmento de evidencia, cuya presencia en una oración de la respuesta se comprueba antes de aceptar la detección. De este modo, la evaluación semántica puede recuperar menciones que el diccionario no reconoce, pero no reemplaza todas las comprobaciones ni revisa automáticamente las coincidencias positivas del código. La verificación del fragmento acredita que la evidencia está en el texto, sin garantizar por sí sola la corrección clínica de la interpretación.
+
+La recompensa combina cinco componentes, cuyos valores se denotan por $E$, $N$, $T$, $B$ y $A$, correspondientes a entidades, cantidades, postura, relaciones y acciones. Como algunos ejemplos no contienen todos los tipos de criterio, los pesos se normalizan entre los componentes disponibles. Si $\mathcal{K}_i$ reúne los componentes activos del ejemplo $i$ y $b_k$ es el presupuesto del componente $k$, se define
+\begin{equation}
+\alpha_{ik}=\frac{b_k}{\sum_{\ell\in\mathcal{K}_i}b_\ell},
+\qquad
+R_i(y)=\operatorname{clip}\!\left(
+\sum_{k\in\mathcal{K}_i}\alpha_{ik}C_{ik}(y)-P_i(y),-1,1\right),
+\label{eq:metodo-recompensa}
+\end{equation}
+donde $C_{ik}(y)$ representa el valor del componente evaluado sobre la respuesta $y$ y $P_i(y)$ reúne las penalizaciones. Así, la ausencia de criterios numéricos en un ejemplo no se interpreta como un incumplimiento ni reduce automáticamente su recompensa máxima.
+
+Las penalizaciones contemplan respuestas vacías, repetición de secuencias y listas breves de palabras clave, buscando reducir formas de obtener cobertura sin desarrollar una explicación útil. Los presupuestos de los componentes y los valores de las penalizaciones utilizados en el experimento central se detallan en la sección~\ref{sec:protocolo-configuracion}. Estos mecanismos no constituyen una evaluación completa de seguridad clínica, ya que no comprueban de manera general contraindicaciones, daño potencial ni la pertinencia de toda recomendación.
+
+
+\subsection{Evaluación semántica y recompensa del piloto posterior}
+En el piloto de la segunda etapa, el juez evalúa el significado de cada criterio y asigna un estado de cumplimiento, ausencia, contradicción, no aplicabilidad o incertidumbre. La decisión debe estar respaldada por evidencia literal cuando corresponde, y una contradicción aplicable impide considerar satisfecho el criterio. Así, el control por código comprueba la integridad del veredicto y la evidencia, mientras que el juicio sobre el cumplimiento del requisito es semántico; este reparto difiere de la búsqueda léxica seguida de revisión de entidades no detectadas utilizada inicialmente.
+
+Si $\mathcal{A}_i$ es el conjunto de criterios aplicables a la respuesta $y$ del ejemplo $i$, $v_j$ su peso positivo y $s_j(y)$ vale 1 únicamente cuando el criterio está satisfecho, la recompensa del piloto es
+\begin{equation}
+R_i^{\mathrm{piloto}}(y)=
+\frac{\sum_{j\in\mathcal{A}_i}v_j s_j(y)}{\sum_{j\in\mathcal{A}_i}v_j}.
+\label{eq:metodo-recompensa-piloto}
+\end{equation}
+Los criterios esenciales tienen peso 3 y los adicionales peso 1. La ausencia o la contradicción no aportan crédito y no reciben una penalización numérica adicional, mientras que la no aplicabilidad requiere una condición prevista en la rúbrica. Por su parte, la incertidumbre, la evidencia inválida o los veredictos incompletos bloquean el cálculo y la actualización correspondiente, en lugar de convertirse automáticamente en una recompensa nula.
+
+Esta formulación concreta permite estudiar una señal basada en la satisfacción de obligaciones y debe distinguirse de otras variantes de recompensa que se investiguen posteriormente. El contraste con RaR requiere examinar tanto la construcción de los criterios como su agregación~\cite{gunjal2025rar}; utilizar preguntas y respuestas de ese trabajo no implica conservar su rúbrica, sus pesos ni su protocolo experimental.

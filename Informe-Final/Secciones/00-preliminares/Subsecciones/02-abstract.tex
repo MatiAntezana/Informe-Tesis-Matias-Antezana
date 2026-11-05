@@ -1,0 +1,13 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\begin{otherlanguage}{english}
+Reinforcement learning with verifiable rewards enables improvements in language models on tasks with checkable answers, such as mathematics and programming. However, applying it to open-ended domains requires evaluating responses that admit different valid formulations and whose quality depends on context and information coverage. This work proposes an adaptation methodology combining supervised fine-tuning (SFT), rubrics extracted from reference answers, and Group Relative Policy Optimization (GRPO). Evaluation integrates programmatic checks and a language model acting as a semantic judge, while hints provided to the model are progressively withdrawn during training.
+
+An initial evaluation in the clinical domain used Qwen2.5-7B to study the integration of these components. A comparison on HealthBench between SFT-90 and SFT-90 + GRPO showed increases of 4.58 percentage points in instruction following and 3.66 points in context awareness, alongside a decrease of 4.11 points in communication quality. Likewise, the GRPO model satisfied more positive criteria but also triggered more negative criteria. These results provided initial evidence of the methodology's capabilities and limitations and guided refinements to rubric construction and reward formulation.
+
+Building on these findings, the second stage uses question--answer pairs from Rubrics as Rewards (RaR) to construct criteria linked to the requirements of each query and investigate their scoring. This stage employs Qwen2.5-3B, starting from SFT45k, adapted through QLoRA and embedding updates over two epochs on 45,000 examples. RaR-derived data are used separately for rubric construction and GRPO. To contrast the proposed methodology with the approach used in the paper, the experimental design allocates 50\% of the learning dataset to SFT and 50\% to GRPO, with independent validation and test sets. The comparison focuses on rubrics and reward formulation; models from the two research stages are not compared directly.
+
+\bigskip
+\noindent\textbf{Keywords:} domain adaptation, language models, reinforcement learning, rubrics, GRPO, scaffolding.
+\end{otherlanguage}
+\clearpage

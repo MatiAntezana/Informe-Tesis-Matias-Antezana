@@ -1,0 +1,15 @@
+\subsection{PPO como antecedente de la optimización de modelos de lenguaje}
+\label{sec:ppo}
+Proximal Policy Optimization (PPO) pertenece a los métodos de optimización de políticas y, en su formulación habitual de actor y crítico, combina una política que selecciona acciones con una función de valor que estima el retorno esperado desde un estado. Esta estimación ayuda a calcular las ventajas utilizadas para actualizar la política, mientras que el crítico se entrena a partir de los retornos observados. Para evitar que la reutilización de las muestras incentive cambios excesivos, una variante de PPO utiliza el objetivo con clipping~\cite{schulman2017ppo},
+\begin{equation}
+L^{\mathrm{clip}}(\theta)=\mathbb{E}_{t}\!\left[
+\min\left(\rho_t(\theta)\widehat{A}_t,
+\operatorname{clip}(\rho_t(\theta),1-\epsilon_c,1+\epsilon_c)\widehat{A}_t\right)
+\right],
+\label{eq:ppo}
+\end{equation}
+donde $\rho_t(\theta)=\pi_\theta(a_t\mid s_t)/\pi_{\mathrm{old}}(a_t\mid s_t)$ compara la probabilidad de la acción observada, $\widehat{A}_t$ es su ventaja estimada y $\epsilon_c$ determina el intervalo de recorte. De este modo, cuando el cambio de probabilidad ya favorece suficientemente una acción con ventaja positiva, el objetivo deja de premiar su aumento en la rama recortada, con un comportamiento análogo para acciones con ventaja negativa. Este mecanismo no impone una cota estricta a cada cambio de parámetros, sino que modifica el incentivo de optimización.
+
+En InstructGPT, PPO se utilizó después del ajuste supervisado para optimizar las respuestas según un modelo de recompensa aprendido de preferencias humanas, incorporando además una regularización respecto de una política de referencia~\cite{ouyang2022instructgpt}. Su aplicación requiere obtener recompensas y estimaciones de valor, lo que añade cómputo y memoria al entrenamiento, aunque la cantidad de modelos almacenados y la posibilidad de compartir componentes dependen de la implementación. Este costo motivó alternativas como GRPO, que reemplaza el crítico aprendido por una comparación de recompensas dentro de cada grupo~\cite{shao2024deepseekmath}.
+
+En este punto, conviene distinguir el algoritmo que actualiza la política del procedimiento que asigna la recompensa, ya que tanto PPO como GRPO pueden utilizar distintas señales de evaluación. Por lo tanto, el carácter verificable de RLVR depende de cómo se comprueba la respuesta y se obtiene esa señal, mientras que la diferencia entre ambos algoritmos reside aquí en cómo estiman las ventajas para orientar la actualización~\cite{schulman2017ppo,shao2024deepseekmath,deepseek2025r1}.

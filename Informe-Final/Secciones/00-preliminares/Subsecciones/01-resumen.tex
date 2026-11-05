@@ -1,0 +1,11 @@
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+El aprendizaje por refuerzo con recompensas verificables permite mejorar modelos de lenguaje en tareas con respuestas comprobables, como matemática y programación. Sin embargo, su aplicación a dominios abiertos requiere evaluar respuestas que admiten distintas formulaciones válidas y cuya calidad depende del contexto y de la información incluida. Este trabajo propone una metodología de adaptación que combina ajuste fino supervisado (SFT), rúbricas extraídas de respuestas de referencia y optimización mediante Group Relative Policy Optimization (GRPO). La evaluación integra comprobaciones programáticas y un modelo de lenguaje como juez semántico, mientras las ayudas proporcionadas al modelo se retiran progresivamente durante el entrenamiento.
+
+Una primera evaluación en el dominio clínico utilizó Qwen2.5-7B para estudiar la integración de estos componentes. La comparación en HealthBench entre SFT-90 y SFT-90 + GRPO mostró aumentos de 4,58 puntos porcentuales en seguimiento de instrucciones y de 3,66 en comprensión del contexto, junto con una disminución de 4,11 puntos en calidad de comunicación. Asimismo, el modelo con GRPO cumplió más criterios positivos, pero también activó más criterios negativos. Estos resultados aportaron evidencia inicial sobre los alcances de la metodología y orientaron el refinamiento de las rúbricas y de la recompensa.
+
+A partir de estos hallazgos, la segunda etapa utiliza preguntas y respuestas procedentes de Rubrics as Rewards (RaR) para construir criterios vinculados a las obligaciones de cada consulta y estudiar su puntuación. Se emplea Qwen2.5-3B, partiendo de SFT45k, adaptado mediante QLoRA y actualización de embeddings durante dos épocas sobre 45.000 ejemplos. Los datos de RaR se utilizan por separado para las rúbricas y GRPO. Para contrastar la metodología propuesta con la del paper, el diseño experimental distribuye el conjunto de aprendizaje en un 50\% para SFT y un 50\% para GRPO, con validación y prueba independientes. El contraste se centra en las rúbricas y la recompensa; los modelos de ambas etapas no se comparan directamente.
+
+\bigskip
+\noindent\textbf{Palabras clave:} adaptación de dominio, modelos de lenguaje, aprendizaje por refuerzo, rúbricas, GRPO, scaffolding.
+\clearpage

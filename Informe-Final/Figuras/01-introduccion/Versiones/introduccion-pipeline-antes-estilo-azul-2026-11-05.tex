@@ -1,0 +1,48 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\definecolor{pipelineink}{HTML}{29465B}
+\definecolor{pipelineblue}{HTML}{EDF3F8}
+\definecolor{pipelinegold}{HTML}{FAF1DE}
+\definecolor{pipelinegray}{HTML}{F4F6F7}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>=Stealth,
+  box/.style={draw=pipelineink!70,line width=0.7pt,rounded corners=3pt,
+    align=center,text width=1.9cm,minimum height=1.05cm,
+    inner sep=5pt,font=\small,text=black,execute at begin node={\hyphenpenalty=10000}},
+  flow/.style={->,draw=pipelineink,line width=0.85pt},
+  label/.style={font=\footnotesize,fill=white,inner sep=3pt,text=pipelineink}]
+\node[box,fill=pipelinegray,text width=1.9cm] (data) at (0,0)
+  {Consultas y\\respuestas\\del dominio};
+\node[box,fill=pipelineblue] (sft) at (2.8,1.65)
+  {Datos para\\SFT};
+\node[box,fill=pipelineblue] (reserve) at (2.8,-1.65)
+  {Datos reservados\\para GRPO};
+\node[box,fill=pipelineblue,text width=2.8cm] (model) at (5.7,1.65)
+  {Entrenamiento\\con SFT};
+\node[box,fill=pipelinegray] (extractor) at (5.7,-1.65)
+  {LLM\\Extracción de\\criterios};
+\node[box,fill=pipelinegray] (rubric) at (8.6,-1.65)
+  {Rúbricas\\extraídas};
+\node[box,fill=pipelinegold,minimum height=1.4cm] (scaffold) at (11.5,-1.65)
+  {Scaffolding};
+\node[box,fill=pipelinegray,text width=2.8cm,minimum height=1.9cm] (grpo) at (14.6,0)
+  {Entrenamiento\\con GRPO\\con rúbricas};
+\node[box,fill=pipelineblue,text width=1.7cm] (final) at (17.7,0)
+  {Modelo Final};
+\draw[flow] (data.east) -- (1.4,0) |- (sft.west);
+\draw[flow] (1.4,0) |- (reserve.west);
+\draw[flow] (sft.east) -- (model.west);
+\draw[flow] (reserve.east) -- (extractor.west);
+\draw[flow] (extractor.east) -- (rubric.west);
+\draw[flow] (reserve.north) -- (2.8,-0.25) --
+  node[label,above]{Consultas} (11.5,-0.25) -- (scaffold.north);
+\draw[flow] (rubric.east) -- (scaffold.west);
+\draw[flow] (model.east) -| (grpo.north);
+\draw[flow] (scaffold.east) -- (13,-1.65) |- (grpo.west);
+\draw[flow] (rubric.south) -- (8.6,-3) --
+  node[label,above]{Rúbrica completa} (14.6,-3) -- (grpo.south);
+\draw[flow] (grpo.east) -- (final.west);
+\end{tikzpicture}%
+}
+\endgroup

@@ -1,0 +1,7 @@
+\section{Integración metodológica}
+\label{sec:contribuciones-integracion}
+El trabajo implementa un procedimiento que utiliza respuestas de referencia para construir una señal de recompensa específica por consulta e incorporarla al entrenamiento con GRPO. En su aplicación inicial a HealthCareMagic e iCliniq, esa supervisión combina detección por código, revisión semántica y ayudas que se retiran durante el entrenamiento.
+
+La evaluación en HealthBench permitió identificar diferencias entre recuperar más información y producir una respuesta mejor valorada en todas sus dimensiones. Este resultado orientó el refinamiento de los criterios: la segunda etapa parte de lo que solicita la pregunta y utiliza la referencia como evidencia para formular los requisitos, con una puntuación separada para criterios esenciales y adicionales.
+
+El aporte metodológico reúne esa implementación y el refinamiento derivado de su evaluación. Los componentes, sus formulaciones y la configuración del entrenamiento se desarrollan en el capítulo~\ref{ch:metodo-propuesto}, mientras que el capítulo~\ref{ch:resultados-adaptacion} presenta los datos, el protocolo de evaluación y los resultados disponibles.

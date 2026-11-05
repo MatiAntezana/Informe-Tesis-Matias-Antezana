@@ -1,0 +1,24 @@
+\subsection{Ciclo de optimización y mecanismos de estabilidad}
+\label{sec:ciclo-optimizacion}
+El ciclo de entrenamiento comienza al seleccionar consultas y generar respuestas mediante una política de muestreo, a partir de las cuales se calculan recompensas y ventajas para actualizar los parámetros. La ventaja indica qué tan favorable resulta una acción o respuesta respecto de una referencia de comparación, lo que permite distinguir una recompensa alta en términos absolutos de una respuesta mejor que las alternativas consideradas. Después de la actualización, se vuelve a generar con la política modificada y se repite el procedimiento, como se representa en la figura \ref{fig:ciclo-rl}~\cite{schulman2017ppo,shao2024deepseekmath}.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/02-marco-teorico/04-ppo-grpo/rl-ciclo-optimizacion}
+\caption{Ciclo de generación, evaluación y actualización de la política.}
+\label{fig:ciclo-rl}
+\end{figure}
+
+Para interpretar este ciclo conviene distinguir la política actual $\pi_\theta$, cuyos parámetros se optimizan, de la política de recolección $\pi_{\mathrm{old}}$, utilizada para generar el conjunto de respuestas de una iteración. Mientras se realizan actualizaciones sobre ese conjunto, ambas pueden diferir, por lo que el algoritmo compara las probabilidades de los tokens bajo las dos políticas. Por otra parte, la política de referencia $\pi_{\mathrm{ref}}$ puede mantenerse fija para regularizar la distancia respecto de un comportamiento inicial, y no debe confundirse con la política que produjo las respuestas de la iteración~\cite{shao2024deepseekmath}.
+
+El muestreo permite obtener distintas respuestas para una misma consulta y, por ello, influye en las alternativas que el entrenamiento puede explorar. Sin embargo, aumentar la diversidad no garantiza que las respuestas sean útiles, mientras que una generación completamente determinista puede reducir la variación necesaria para comparar alternativas. Para controlar la actualización, algunos métodos utilizan clipping sobre la razón de probabilidades y una penalización por divergencia de Kullback y Leibler (KL). El primero limita el incentivo del objetivo a ciertos cambios respecto de la política de recolección, mientras que la segunda penaliza la distancia respecto de una política de referencia, por lo que cumplen funciones distintas y ninguno garantiza por sí solo la estabilidad del entrenamiento~\cite{schulman2017ppo,ouyang2022instructgpt}.
+
+Para un estado fijo $s$, la divergencia KL entre la política actual y la de referencia se define como
+\begin{equation}
+D_{\mathrm{KL}}\!\left(\pi_\theta(\cdot\mid s)\,\|\,\pi_{\mathrm{ref}}(\cdot\mid s)\right)
+=\sum_{a\in\mathcal{V}}\pi_\theta(a\mid s)
+\log\frac{\pi_\theta(a\mid s)}{\pi_{\mathrm{ref}}(a\mid s)},
+\label{eq:kl}
+\end{equation}
+donde $\mathcal{V}$ es el vocabulario de tokens y se supone que la política de referencia asigna probabilidad positiva a las acciones consideradas. Esta divergencia compara distribuciones completas y vale cero cuando coinciden, mientras que un coeficiente $\beta$ controla su contribución al objetivo. En implementaciones de entrenamiento puede estimarse mediante los tokens muestreados, por lo que también debe documentarse el estimador utilizado, además del valor de $\beta$~\cite{shao2024deepseekmath}.
+

@@ -1,0 +1,18 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\begin{tikzpicture}
+\begin{axis}[width=.98\textwidth,height=6.4cm,
+ xlabel={Épocas},ylabel={Pérdida},
+ grid=major,grid style={gray!15},axis lines=left,
+ tick label style={font=\footnotesize},label style={font=\small},
+ legend style={font=\footnotesize,draw=none,at={(.98,.98)},anchor=north east,fill=white},
+ scaled ticks=false]
+\addplot[color=blue!18,line width=.3pt,forget plot] table[x=x,y=loss] {Figuras/04-entrenamiento/sft-inicial-train.dat};
+\addplot[color={rgb,255:red,53;green,95;blue,128},line width=1.1pt] table[x=x,y=smooth] {Figuras/04-entrenamiento/sft-inicial-train.dat};
+\addlegendentry{Entrenamiento (media móvil)}
+\addplot[color={rgb,255:red,179;green,104;blue,62},mark=*,mark size=1.5pt,line width=1pt] table[x=x,y=loss] {Figuras/04-entrenamiento/sft-inicial-validation.dat};
+\addlegendentry{Validación}
+\end{axis}
+\end{tikzpicture}
+\endgroup

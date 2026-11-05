@@ -1,0 +1,5 @@
+\subsection{Seguimiento del ajuste supervisado}
+\label{sec:metricas-sft}
+Durante SFT se registra la pérdida de entrenamiento sobre los tokens supervisados, definida en la ecuación~\ref{eq:sft-mascara}. Su descenso indica que el modelo asigna mayor probabilidad a las respuestas de referencia. La pérdida de validación aplica el mismo cálculo a ejemplos separados, sin actualizar parámetros, para seguir el ajuste fuera de los datos utilizados en cada paso.
+
+Los registros también incluyen la tasa de aprendizaje y la norma del gradiente. En SFT45k se contabilizan los tokens supervisados y su velocidad de procesamiento, lo que permite relacionar cada actualización con el volumen de texto aprendido y el tiempo empleado. Estos valores describen el comportamiento del entrenamiento; la calidad de las respuestas generadas se examina mediante la evaluación posterior.

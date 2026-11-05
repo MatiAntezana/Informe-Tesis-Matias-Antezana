@@ -1,0 +1,8 @@
+\section{Integración de las rúbricas y las ayudas con GRPO}
+\label{sec:metodo-integracion}
+Una vez preparado el conjunto con sus rúbricas y máscaras de visibilidad, el modelo adaptado genera un grupo de respuestas para cada consulta y cada respuesta recibe una recompensa mediante el procedimiento anterior. Esos valores alimentan la comparación relativa descrita en la sección \ref{sec:grpo}, de modo que GRPO actualiza la política utilizando las diferencias dentro del grupo~\cite{shao2024deepseekmath}. La propuesta conserva ese mecanismo de optimización y modifica principalmente la construcción de la señal y las ayudas disponibles durante las distintas etapas.
+
+Durante el entrenamiento se registran las respuestas, las decisiones de presencia, la evidencia semántica, los valores de cada componente y las penalizaciones. Estos registros permiten analizar si una variación de la recompensa procede de recuperar contenido, de cambios en las ayudas o de evitar determinadas formas de respuesta. La configuración utilizada para aplicar este procedimiento se describe en la sección~\ref{sec:protocolo-configuracion}, mientras que la evaluación externa emplea criterios independientes de los utilizados para entrenar.
+
+
+La misma secuencia de generación, evaluación y actualización se mantiene en la segunda etapa, utilizando las rúbricas refinadas y la recompensa del piloto. En consecuencia, los cambios en la construcción de criterios y en su puntuación pueden estudiarse dentro del procedimiento común, conservando una referencia KL correspondiente al modelo adaptado mediante SFT. Las configuraciones de ambas etapas se detallan en la sección~\ref{sec:metodo-entrenamiento}.

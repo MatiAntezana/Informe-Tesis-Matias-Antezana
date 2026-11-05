@@ -1,0 +1,19 @@
+\begingroup
+\singlespacing
+\begin{tikzpicture}[>=Stealth,
+ box/.style={draw,rounded corners=2pt,align=center,text width=2.55cm,minimum height=1.05cm,font=\small}]
+\node[box,text width=5cm] (q) at (5,1.5) {Una consulta, cuatro respuestas generadas};
+\node[box] (a) at (0,0) {Respuesta 1\\$r_1=0{,}2$};
+\node[box] (b) at (3.33,0) {Respuesta 2\\$r_2=0{,}4$};
+\node[box] (c) at (6.66,0) {Respuesta 3\\$r_3=0{,}7$};
+\node[box] (d) at (9.99,0) {Respuesta 4\\$r_4=0{,}9$};
+\foreach \n in {a,b,c,d} \draw[->] (q.south)--(\n.north);
+\node[box,text width=11.4cm] (stat) at (5,-1.65) {Comparación dentro del grupo\quad $\overline{r}=0{,}55$\quad $\sigma_r\simeq0{,}2693$};
+\foreach \n in {a,b,c,d} \draw[->] (\n.south)--(stat.north);
+\node[box] (aa) at (0,-3.3) {$A_1\simeq-1{,}30$\\Ventaja negativa};
+\node[box] (bb) at (3.33,-3.3) {$A_2\simeq-0{,}56$\\Ventaja negativa};
+\node[box] (cc) at (6.66,-3.3) {$A_3\simeq+0{,}56$\\Ventaja positiva};
+\node[box] (dd) at (9.99,-3.3) {$A_4\simeq+1{,}30$\\Ventaja positiva};
+\foreach \n in {aa,bb,cc,dd} \draw[->] (stat.south)--(\n.north);
+\end{tikzpicture}
+\endgroup

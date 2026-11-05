@@ -1,0 +1,31 @@
+\subsection{Entrenamiento de parámetros mediante LoRA}
+\label{sec:sft-parametros}
+El ajuste completo requiere calcular y almacenar gradientes y estados del optimizador para todos los parámetros del modelo, lo que aumenta el uso de memoria y el costo del entrenamiento. El ajuste parcial reduce esa carga al actualizar solo un subconjunto, aunque la adaptación queda condicionada por las capas o los módulos seleccionados. Frente a estas restricciones, LoRA incorpora matrices entrenables de rango reducido en las proyecciones elegidas y mantiene congelados sus pesos originales~\cite{hu2022lora}.
+
+Como muestra la figura~\ref{fig:sft-parametros}, una misma entrada recorre dos ramas: la transformación original y la actualización de LoRA. Sus salidas se suman, de modo que el modelo puede modificar su respuesta mediante los parámetros añadidos sin actualizar la matriz base.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/02-marco-teorico/02-ajuste-supervisado/sft-lora-parametros}
+\caption{LoRA: pesos base congelados y matrices $A$ y $B$ entrenables.}
+\label{fig:sft-parametros}
+\end{figure}
+
+Para una matriz $W_0\in\mathbb{R}^{d_{\mathrm{out}}\times d_{\mathrm{in}}}$, la transformación utiliza los pesos efectivos
+\begin{equation}
+W_{\mathrm{eff}}=W_0+\frac{\alpha}{r}BA,
+\qquad A\in\mathbb{R}^{r\times d_{\mathrm{in}}},
+\qquad B\in\mathbb{R}^{d_{\mathrm{out}}\times r},
+\label{eq:sft-lora}
+\end{equation}
+donde $r$ determina el rango de la actualización y $\alpha/r$ controla su escala. La matriz $A$ proyecta la entrada a una dimensión reducida y $B$ la lleva a la dimensión de salida, mientras $W_0$ permanece fija.
+
+Durante el SFT, la pérdida se calcula sobre las predicciones obtenidas con esta transformación. A continuación, la retropropagación calcula los gradientes de $A$ y $B$, y el optimizador actualiza esas matrices para reducir la pérdida. Los pesos de $W_0$ siguen interviniendo en el cálculo de la salida, pero no reciben actualizaciones. Este procedimiento se aplica a cada proyección seleccionada para incorporar LoRA.
+
+Para esa matriz, la cantidad de parámetros entrenables añadidos es
+\begin{equation}
+P_{\mathrm{LoRA}}=r(d_{\mathrm{in}}+d_{\mathrm{out}}),
+\qquad P_{W_0}=d_{\mathrm{in}}d_{\mathrm{out}},
+\label{eq:sft-lora-parametros}
+\end{equation}
+por lo que un rango pequeño reduce el número de parámetros entrenables y los recursos necesarios para calcular y almacenar sus gradientes y estados del optimizador, disminuyendo así el costo del entrenamiento. La selección de proyecciones, el rango y la escala definen la configuración de los adaptadores.

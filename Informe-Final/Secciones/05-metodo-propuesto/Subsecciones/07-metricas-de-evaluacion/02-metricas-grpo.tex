@@ -1,0 +1,7 @@
+\subsection{Seguimiento del entrenamiento con GRPO}
+\label{sec:metricas-grpo}
+La medida principal es la recompensa media de las respuestas generadas para cada consulta. Junto con ella se registra su desviación estándar dentro del grupo, porque las diferencias entre respuestas determinan las ventajas utilizadas por GRPO. En el piloto posterior también se identifica la frecuencia de grupos con recompensas idénticas. Para visualizar la tendencia se conserva una media móvil exponencial, además de los valores sin suavizar.
+
+La pérdida de optimización, la divergencia KL respecto de la referencia y la norma del gradiente permiten seguir las actualizaciones. También se registra la longitud de las respuestas; en el piloto se añade la proporción de salidas que alcanzan el límite de generación. Las métricas se relacionan con la etapa y con la cantidad de ayudas visibles, ya que una recompensa obtenida con asistencia completa no tiene la misma dificultad que una obtenida sin ayudas.
+
+En el piloto posterior se registra por separado la proporción de criterios esenciales y adicionales satisfechos, junto con los estados asignados por el juez. La validación utiliza consultas sin ayudas y registra la recompensa media, su dispersión y la proporción de respuestas truncadas, antes del entrenamiento y al terminar cada etapa. Esta evaluación permite observar el comportamiento sin asistencia mientras cambia la cantidad de ayudas del conjunto de entrenamiento.

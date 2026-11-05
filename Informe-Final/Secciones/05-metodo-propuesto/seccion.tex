@@ -1,0 +1,14 @@
+\chapter{Aprendizaje por refuerzo mediante rúbricas extraídas y técnica de scaffolding}
+\label{ch:metodo-propuesto}
+
+El método propuesto busca adaptar modelos de lenguaje a dominios abiertos mediante una etapa de post training que combina adaptación supervisada y optimización por refuerzo con rúbricas extraídas de respuestas de referencia. La propuesta parte de que esas respuestas contienen información útil para construir una recompensa, aunque su calidad no pueda comprobarse íntegramente mediante una única regla determinista. En la implementación inicial, se extraen conceptos y expresiones relevantes, se organizan en criterios evaluables y se combinan procedimientos de verificación por código con una evaluación semántica para los casos no resueltos por coincidencia. A su vez, parte de esa información se presenta inicialmente como ayuda y se retira durante el entrenamiento, con el propósito de que el modelo aprenda a responder sin depender de ella.
+
+El procedimiento se estudia mediante una evaluación inicial y un refinamiento posterior apoyado en datos de RaR. Las secciones siguientes distinguen los componentes comunes de las formulaciones propias de cada etapa y reúnen las arquitecturas y la configuración de entrenamiento en la sección~\ref{sec:metodo-entrenamiento}. El capítulo~\ref{ch:evolucion-entrenamiento} presenta los datos y el seguimiento del aprendizaje, mientras que el capítulo~\ref{ch:resultados-adaptacion} reúne la evaluación externa.
+
+\input{Secciones/05-metodo-propuesto/Subsecciones/01-diseno-general-y-separacion-de-los-datos}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/02-extraccion-de-entidades-clave-y-construccion-de-criterios}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/03-evaluacion-hibrida-y-funcion-de-recompensa}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/04-retirada-progresiva-de-ayudas-y-recompensa-asimetrica}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/05-integracion-con-grpo-en-los-experimentos-centrales}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/06-entrenamiento}%
+\input{Secciones/05-metodo-propuesto/Subsecciones/07-metricas-de-evaluacion}

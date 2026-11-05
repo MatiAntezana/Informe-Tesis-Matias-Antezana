@@ -1,0 +1,7 @@
+\subsection{Evaluación externa en HealthBench}
+\label{sec:metricas-benchmark}
+HealthBench combina los criterios cumplidos y sus pesos en una puntuación por conversación. El resultado global promedia esos valores y aplica el recorte definido en la ecuación~\ref{eq:healthbench-global}~\cite{arora2025healthbench,openai2026healthbenchcode}. El procedimiento se desarrolla en la sección~\ref{sec:marco-evaluacion}, mientras que las condiciones del juez y de generación del proyecto se detallan en la sección~\ref{sec:protocolo-experimental}.
+
+Para analizar la primera etapa se presentan desgloses de precisión, calidad de comunicación, comprensión del contexto y seguimiento de instrucciones, calculados según la ecuación~\ref{eq:healthbench-ejes}. También se cuentan los criterios positivos cumplidos y los negativos activados, con sus respectivas proporciones. Estos conteos permiten reconocer si una mayor cobertura se acompaña de más errores, aunque no incorporan los pesos utilizados en la puntuación del benchmark.
+
+La comparación entre SFT-90 y SFT-90 + GRPO utiliza los mismos casos y expresa las diferencias entre ejes en puntos porcentuales. Los fragmentos de respuestas del análisis cualitativo ayudan a interpretar qué cambios de contenido acompañan esas diferencias. Los resultados corresponden a la evaluación con el juez local utilizado en el proyecto.

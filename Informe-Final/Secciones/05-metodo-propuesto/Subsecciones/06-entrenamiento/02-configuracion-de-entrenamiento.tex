@@ -1,0 +1,20 @@
+\subsection{Configuración de entrenamiento}
+\label{sec:metodo-configuracion}
+\label{sec:protocolo-configuracion}
+\subsubsection{Pruebas del método de adaptación a dominios abiertos}
+En la primera etapa, la adaptación supervisada utiliza la partición del 90\% de las consultas y respuestas preparadas, mientras que la reserva aporta los ejemplos para las rúbricas y GRPO. El entrenamiento posterior parte de SFT-90 y actualiza adaptadores LoRA de rango 64 y escala 16. Las fuentes y el particionado se detallan en la sección~\ref{sec:protocolo-primera-etapa}.
+
+El entrenamiento utiliza 16 generaciones por consulta, una tasa de aprendizaje de $5\times10^{-6}$, un coeficiente de regularización KL de 0,04 y un máximo de 250 tokens nuevos por respuesta, con temperatura 0,7 y top\_p de 0,9. Cada una de las 500 consultas se presenta en diez etapas de ayudas, formando un conjunto de 5.000 entradas que el entrenador recorre una vez.
+
+Los pesos iniciales de los componentes de recompensa son 0,55 para entidades, 0,20 para cantidades, 0,15 para postura, 0,05 para relaciones y 0,05 para acciones, normalizados entre los componentes activos de cada ejemplo según la ecuación~\ref{eq:metodo-recompensa}. Las penalizaciones corresponden a respuestas vacías, repetición de secuencias de tres tokens y listas breves de palabras clave, con un valor de 1 para las respuestas vacías y máximos de 0,10 y 0,05 para las otras dos, respectivamente.
+
+Durante las primeras nueve etapas, todas pueden recibir ayudas, pero la proporción de entidades conservadas como ayuda desciende del 100\% al 20\% en pasos de diez puntos porcentuales, mientras que en la décima etapa no se muestra ninguna entidad. La cantidad visible se obtiene redondeando hacia arriba y conservando al menos una entidad cuando existe asistencia, de modo que la proporción efectiva depende de cuántos conceptos contenga cada rúbrica. Además, la selección utiliza un orden determinista que permite que las ayudas de una etapa posterior formen un subconjunto de las anteriores.
+
+En la ecuación~\ref{eq:metodo-entidades-ocultas}, el multiplicador $\lambda_e$ vale 1 para las entidades visibles y 2,5 para las ocultas, mientras que la bonificación máxima por recuperación se fija en $\eta=0{,}05$.
+
+\subsubsection{Comparación con un trabajo externo}
+El entrenamiento supervisado de SFT45k comprende dos épocas sobre 45.000 muestras. El entrenamiento con GRPO parte de este checkpoint y utiliza preguntas y respuestas procedentes de RaR, cuyos conjuntos de entrenamiento y validación se describen en la sección~\ref{sec:protocolo-segunda-etapa}.
+
+El piloto configura nuevos adaptadores LoRA de rango 16 y escala 32, con una tasa de aprendizaje de $2\times10^{-6}$, mientras que los embeddings se actualizan con una tasa de $2\times10^{-7}$. Se generan 16 respuestas por consulta con temperatura 0,7, top\_p de 0,9 y un máximo de 1.024 tokens nuevos. El coeficiente de regularización KL es 0,04 y el objetivo utiliza normalización BNPO, con una única actualización por grupo. La generación se organiza en microbatches de ocho respuestas y el cálculo de gradientes en cuatro microbatches de cuatro respuestas.
+
+El calendario del piloto recorre las consultas en cinco etapas con proporciones de ayudas de 100\%, 75\%, 50\%, 25\% y 0\%, utilizando el orden fijo y el redondeo hacia arriba descritos en la sección~\ref{sec:metodo-ayudas}. La validación se realiza sin ayudas antes del entrenamiento y al finalizar cada etapa. La puntuación sigue la ecuación~\ref{eq:metodo-recompensa-piloto}, con pesos de 3 para criterios esenciales y 1 para adicionales, y permanece independiente de las ayudas visibles para el modelo.

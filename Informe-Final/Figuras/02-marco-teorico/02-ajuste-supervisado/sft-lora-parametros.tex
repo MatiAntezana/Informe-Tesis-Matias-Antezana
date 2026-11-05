@@ -1,0 +1,31 @@
+\begingroup
+\singlespacing
+\definecolor{loratrain}{HTML}{286B9B}
+\definecolor{lorafixed}{HTML}{87929A}
+\begin{tikzpicture}[>=Stealth,
+  block/.style={draw,line width=0.8pt,rounded corners=3pt,align=center,
+    minimum height=1.0cm,minimum width=1.8cm,inner sep=6pt,font=\small},
+  train/.style={draw=loratrain,fill=loratrain!9},
+  fixed/.style={draw=lorafixed,fill=lorafixed!12},
+  flow/.style={->,line width=0.85pt,draw=black!65}]
+\node[font=\normalsize] (input) at (0,0) {$x$};
+\coordinate (split) at (0.7,0);
+\node[block,fixed,minimum width=2.5cm] (base) at (3.3,1.25) {$W_0$\\Congelada};
+\node[block,train] (a) at (2.0,-1.2) {$A$\\Entrenable};
+\node[block,train] (b) at (4.5,-1.2) {$B$\\Entrenable};
+\node[block,minimum width=1.0cm,draw=black!45] (scale) at (6.7,-1.2) {$\alpha/r$};
+\node[circle,draw=black!60,minimum size=7mm,inner sep=0pt] (sum) at (8.3,1.25) {$+$};
+\node[font=\normalsize] (output) at (9.4,1.25) {$y$};
+\draw[draw=black!65,line width=0.85pt] (input) -- (split);
+\fill[black!65] (split) circle (1.3pt);
+\draw[flow,draw=lorafixed] (split) |- (base.west);
+\draw[flow,draw=lorafixed] (base) -- (sum);
+\draw[flow,draw=loratrain] (split) |- (a.west);
+\draw[flow,draw=loratrain] (a) -- (b);
+\draw[flow,draw=loratrain] (b) -- (scale);
+\draw[flow,draw=loratrain] (scale.east) -| (sum.south);
+\draw[flow] (sum) -- (output);
+\node[font=\small,align=center] at (4.7,-2.6)
+  {$y=W_0x+\dfrac{\alpha}{r}BAx$};
+\end{tikzpicture}
+\endgroup

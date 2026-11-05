@@ -1,0 +1,20 @@
+\begingroup
+\singlespacing
+\begin{tikzpicture}[>=Stealth,
+ box/.style={draw,rounded corners=2pt,align=center,text width=3.2cm,minimum height=1.1cm,font=\small},
+ lbl/.style={font=\small,align=center}]
+\node[box] (q) at (0,0) {Consultas del conjunto de entrenamiento};
+\node[box] (p) at (4.5,0) {Política de recolección\\Generación de respuestas};
+\node[box] (e) at (9,0) {Evaluador externo\\Cálculo de recompensas};
+\node[box] (u) at (0,-2.5) {Política actual\\Actualización de parámetros};
+\node[box] (a) at (4.5,-2.5) {Ventajas y probabilidades de los tokens};
+\node[box,dashed] (ref) at (9,-2.5) {Política de referencia\\Comparación mediante KL};
+\draw[->] (q)--(p); \draw[->] (p)--(e);
+\draw[->] (e.south)--(9,-1.25)-|(a.north east);
+\draw[->] (p.south)--(a.north);
+\draw[->] (a)--(u);
+\draw[->,dashed] (ref.south)--++(0,-0.6)-|(u.south);
+\draw[->] (u.west)--(-2.2,-2.5)--(-2.2,1.35)--(4.5,1.35)--(p.north);
+\node[lbl] at (4.1,1.95) {La política actualizada se usa en la siguiente iteración};
+\end{tikzpicture}
+\endgroup

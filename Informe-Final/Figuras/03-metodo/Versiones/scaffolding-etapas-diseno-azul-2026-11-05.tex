@@ -1,0 +1,37 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\definecolor{scaffoldink}{HTML}{253F53}
+\definecolor{scaffoldline}{HTML}{8DA1B0}
+\definecolor{scaffoldblue}{HTML}{F1F5F8}
+\definecolor{scaffoldgold}{HTML}{F8F3E8}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>=Stealth,
+ box/.style={draw=scaffoldline,rounded corners=3pt,line width=.65pt,
+   align=center,inner sep=8pt,text=scaffoldink,font=\sffamily\small},
+ flow/.style={->,draw=scaffoldink!80,line width=.8pt},
+ branch/.style={draw=scaffoldline,line width=.8pt,line cap=round,line join=round},
+ stage/.style={box,fill=scaffoldblue,text width=2.35cm,minimum height=2.35cm,inner sep=6pt}]
+\node[box,fill=scaffoldgold,text width=4.7cm,minimum height=1.05cm] (llm) at (6.2,4.5)
+ {{\bfseries LLM}\\[4pt]Generación de rúbricas};
+\node[box,fill=scaffoldblue,text width=4.7cm,minimum height=.8cm] (grpo) at (6.2,2.85)
+ {\bfseries Entrenamiento con GRPO};
+\draw[flow] (llm.south) -- (grpo.north);
+\node[stage] (s1) at (0,0)
+ {{\bfseries Etapa 1}\\[10pt]{\fontsize{22}{24}\selectfont 100\%}\\[7pt]de entidades\\en el input};
+\node[stage] (s2) at (3.1,0)
+ {{\bfseries Etapa 2}\\[10pt]{\fontsize{22}{24}\selectfont 75\%}\\[7pt]de entidades\\en el input};
+\node[stage] (s3) at (6.2,0)
+ {{\bfseries Etapa 3}\\[10pt]{\fontsize{22}{24}\selectfont 50\%}\\[7pt]de entidades\\en el input};
+\node[stage] (s4) at (9.3,0)
+ {{\bfseries Etapa 4}\\[10pt]{\fontsize{22}{24}\selectfont 25\%}\\[7pt]de entidades\\en el input};
+\node[stage] (s5) at (12.4,0)
+ {{\bfseries Etapa 5}\\[10pt]{\fontsize{22}{24}\selectfont 0\%}\\[7pt]de entidades\\en el input};
+\draw[branch] (grpo.south) -- (6.2,1.8);
+\draw[branch] (0,1.8) -- (12.4,1.8);
+\foreach \stage in {s1,s2,s3,s4,s5} {
+ \draw[branch] (\stage.north) -- (\stage.north |- 0,1.8);
+}
+\end{tikzpicture}%
+}
+\endgroup

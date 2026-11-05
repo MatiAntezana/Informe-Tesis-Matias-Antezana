@@ -1,0 +1,13 @@
+\section{Rúbricas y modelos de lenguaje como jueces}
+\label{sec:marco-rubricas}
+En las tareas abiertas, una rúbrica descompone la evaluación en criterios que describen contenidos esperados, restricciones y errores relevantes. Cada criterio puede asociarse con un peso para combinar sus decisiones en una recompensa, permitiendo distinguir respuestas parcialmente satisfactorias. Rubicon estudia esta forma de supervisión en tareas abiertas, mientras que ARES genera preguntas, respuestas y rúbricas a partir de documentos~\cite{huang2025rubicon,li2026ares}.
+
+Rubrics as Rewards (RaR) utiliza rúbricas específicas por consulta como señal de recompensa para entrenar mediante GRPO. Su construcción toma respuestas de referencia como fuente de supervisión y organiza los criterios para que puedan evaluarse individualmente. El trabajo estudia una agregación explícita, que combina decisiones de cumplimiento mediante sus pesos, y una agregación implícita, en la que el juez recibe la rúbrica y produce una puntuación global~\cite{gunjal2025rar}. Esta distinción permite estudiar por separado el contenido de los criterios y la forma en que sus evaluaciones se convierten en recompensa.
+
+\subsection{Evaluación por criterios y ayudas durante la generación}
+\label{sec:marco-jueces}
+Un modelo de lenguaje puede actuar como juez al recibir la consulta, la respuesta generada y los criterios que debe comprobar. En una evaluación binaria por criterio, sus decisiones indican qué condiciones se cumplen y luego se agregan según sus pesos. A diferencia de una coincidencia literal, esta evaluación permite examinar formulaciones equivalentes, aunque su resultado depende de las instrucciones y de la interpretación del modelo evaluador~\cite{arora2025healthbench,zhou2026ruscarl}.
+
+La rúbrica también puede intervenir en la generación al mostrar parte de sus criterios como ayudas. RuscaRL utiliza distintos niveles de asistencia y reduce su presencia durante el entrenamiento, manteniendo los criterios completos para evaluar las respuestas~\cite{zhou2026ruscarl}. Por ello, conviene distinguir la información visible para el modelo de la que utiliza el juez, así como la recompensa de entrenamiento de la evaluación externa.
+
+\input{Secciones/02-marco-teorico/Subsecciones/05-rubricas-jueces/07-limitaciones-y-evaluacion-del-aprendizaje-obtenido}%

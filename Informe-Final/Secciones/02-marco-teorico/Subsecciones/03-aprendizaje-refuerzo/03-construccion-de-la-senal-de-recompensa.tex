@@ -1,0 +1,15 @@
+\subsection{Construcción de la señal de recompensa}
+\label{sec:senal-recompensa}
+La recompensa expresa qué comportamientos se busca favorecer y cuáles se intenta reducir, por lo que su construcción determina la dirección del entrenamiento. Una posibilidad es obtener evaluaciones humanas sobre respuestas generadas o comparaciones entre pares de respuestas, que permiten aprender un modelo de recompensa capaz de predecir preferencias~\cite{christiano2017preferences,ouyang2022instructgpt}. También puede utilizarse retroalimentación de otros modelos para construir esas preferencias o valorar las respuestas, como ocurre en los procedimientos de aprendizaje con feedback de inteligencia artificial~\cite{bai2022constitutional}. Estas fuentes no son equivalentes, ya que dependen de distintos evaluadores y pueden reproducir sus sesgos.
+
+Cuando existe una condición comprobable, la recompensa puede obtenerse mediante un verificador programático que compare un resultado, ejecute pruebas sobre código o compruebe una restricción de formato~\cite{deepseek2025r1}. Este uso de condiciones comprobables corresponde al aprendizaje por refuerzo con recompensas verificables (RLVR). Una comprobación binaria asigna dos resultados posibles, mientras que una señal graduada permite distinguir niveles de desempeño. Asimismo, la evaluación puede referirse al resultado final o a pasos del razonamiento, una distinción que afecta a la información que recibe el entrenamiento~\cite{lightman2023verify}.
+
+PPO y GRPO utilizan habitualmente una recompensa escalar para calcular la actualización, por lo que el procedimiento de evaluación debe producir un valor que permita comparar las respuestas. Además, el evaluador no necesita ser diferenciable, ya que en los métodos de gradiente de política la señal evaluativa se combina con las probabilidades de las acciones generadas por el modelo~\cite{sutton2018reinforcement}. Por ejemplo, para una recompensa final y una consulta fija, la identidad
+\begin{equation}
+\nabla_\theta\mathbb{E}_{y\sim\pi_\theta}[R(x,y)]
+=\mathbb{E}_{y\sim\pi_\theta}
+[R(x,y)\nabla_\theta\log\pi_\theta(y\mid x)]
+\label{eq:gradiente-politica}
+\end{equation}
+muestra que, cuando $R$ se trata como una evaluación fija sin dependencia directa de $\theta$, el gradiente se calcula sobre la política y no atraviesa el juez. Esta relación fundamenta el uso de verificadores y evaluadores externos, aunque los algoritmos prácticos añaden estimadores de ventaja y mecanismos de estabilidad.
+

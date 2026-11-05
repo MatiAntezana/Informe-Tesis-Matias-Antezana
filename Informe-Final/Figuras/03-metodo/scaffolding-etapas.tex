@@ -1,0 +1,48 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\definecolor{scaffoldink}{HTML}{253F53}
+\definecolor{scaffoldline}{HTML}{658AA8}
+\definecolor{scaffoldcream}{HTML}{F7FAFC}
+\definecolor{scaffoldpeach}{HTML}{C7DCEC}
+\definecolor{scaffoldsand}{HTML}{DBE7F0}
+\definecolor{scaffoldshadow}{HTML}{D6E0E8}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>=Stealth,
+ base/.style={rounded corners=9pt,draw=scaffoldline,line width=.9pt,fill=scaffoldcream},
+ title/.style={align=center,text=scaffoldink,font=\sffamily\small\bfseries,inner sep=2pt},
+ body/.style={align=center,text=scaffoldink,font=\sffamily\small,inner sep=0pt},
+ branch/.style={draw=scaffoldline,line width=1.3pt,rounded corners=8pt,line cap=round,line join=round}]
+% Tarjetas superiores: cabecera y cuerpo, con sombra discreta.
+\fill[scaffoldshadow,rounded corners=9pt] (4.04,4.23) rectangle (9.24,5.71);
+\draw[base] (4.12,4.32) rectangle (9.32,5.8);
+\draw[draw=scaffoldline,fill=scaffoldpeach,rounded corners=6pt,line width=.8pt]
+ (4.3,5.15) rectangle (9.14,5.59);
+\node[title] at (6.72,5.37) {LLM};
+\node[body] at (6.72,4.73) {Generación de rúbricas};
+\fill[scaffoldshadow,rounded corners=9pt] (4.04,2.48) rectangle (9.24,3.61);
+\draw[base] (4.12,2.57) rectangle (9.32,3.7);
+\draw[draw=scaffoldline,fill=scaffoldsand,rounded corners=6pt,line width=.8pt]
+ (4.3,2.88) rectangle (9.14,3.39);
+\node[title] at (6.72,3.135) {Entrenamiento con GRPO};
+\draw[branch] (6.72,4.32) -- (6.72,3.7);
+% Una única línea conecta GRPO con todas las etapas.
+\draw[branch] (6.72,2.57) -- (6.72,1.92);
+\draw[branch] (0,1.12) -- (0,1.64) -- (13.44,1.64) -- (13.44,1.12);
+\foreach \x in {3.36,6.72,10.08} {
+ \draw[branch] (\x,1.64) -- (\x,1.12);
+}
+\draw[branch] (6.72,1.92) -- (6.72,1.64);
+% Etapas con cabeceras de tonos azules y porcentajes destacados.
+\foreach \x/\n/\pct/\tone in {0/1/100/scaffoldpeach,3.36/2/75/scaffoldpeach!75!scaffoldsand,6.72/3/50/scaffoldsand,10.08/4/25/scaffoldsand!65!scaffoldcream,13.44/5/0/scaffoldsand!35!scaffoldcream} {
+ \fill[scaffoldshadow,rounded corners=9pt] (\x-1.5,-1.76) rectangle (\x+1.34,1.03);
+ \draw[base] (\x-1.42,-1.67) rectangle (\x+1.42,1.12);
+ \draw[draw=scaffoldline,fill=\tone,rounded corners=6pt,line width=.8pt]
+ (\x-1.25,.46) rectangle (\x+1.25,.91);
+ \node[title] at (\x,.685) {Etapa \n};
+ \node[body,font=\normalfont\large] at (\x,-.13) {\pct\%};
+ \node[body] at (\x,-1.02) {de entidades\\en el input};
+}
+\end{tikzpicture}%
+}
+\endgroup

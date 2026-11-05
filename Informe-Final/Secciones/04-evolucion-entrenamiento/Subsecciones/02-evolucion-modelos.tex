@@ -1,0 +1,18 @@
+\section{Evolución de los modelos durante el entrenamiento}
+\label{sec:evolucion-modelos}
+\subsection{Ajuste supervisado de la primera etapa}
+El historial de SFT conservado junto al adaptador de la primera etapa registra cinco épocas de entrenamiento. La figura~\ref{fig:sft-inicial-curvas} muestra la pérdida de entrenamiento y las evaluaciones realizadas al terminar cada época. Para hacer visible la tendencia, la curva de entrenamiento utiliza una media móvil de 25 registros; los valores individuales se mantienen en un tono más claro.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/04-entrenamiento/sft-inicial}
+\caption{Pérdidas de entrenamiento y validación del SFT inicial.}
+\label{fig:sft-inicial-curvas}
+\end{figure}
+
+La pérdida de validación desciende de 1,873 al finalizar la primera época a 1,812 en la tercera, y después aumenta hasta 1,884 en la quinta. En cambio, la pérdida de entrenamiento continúa descendiendo. Esta separación muestra que prolongar el ajuste mejora la reproducción de los ejemplos de entrenamiento sin producir la misma evolución en el conjunto de validación.
+
+\subsection{Entrenamiento posterior con GRPO}
+El modelo adaptado mediante SFT se utiliza después para generar y evaluar grupos de respuestas sobre las consultas reservadas. Las diez etapas modifican la cantidad de entidades disponibles como ayuda, con la configuración descrita en la sección~\ref{sec:metodo-configuracion}. Para analizar su evolución, las curvas de recompensa y KL deben conservar esa referencia temporal y distinguir los tramos asistidos del tramo final sin ayudas.
+
+Las respuestas del modelo obtenido se evalúan después en HealthBench, con los resultados presentados en la sección~\ref{sec:evaluacion-healthbench}.

@@ -1,0 +1,25 @@
+\section{Construcción y refinamiento de rúbricas a partir de referencias}
+\label{sec:metodo-criterios}
+En la primera etapa, se denominan entidades clave a los conceptos y expresiones relevantes de las respuestas de referencia que se utilizan como unidades de supervisión de la recompensa. El término incluye diagnósticos, localizaciones anatómicas, medicamentos, pruebas y profesionales, además de expresiones que describen acciones recomendadas o la evolución de un problema, de modo que no se restringe a entidades nombradas en sentido estricto. Los siguientes ejemplos presentan una selección real de expresiones de una de las rúbricas del conjunto central, conservando el idioma de los datos originales:
+
+\begingroup
+\begin{itemize}
+\item \textbf{Boil:} representa un posible diagnóstico mencionado en la respuesta de referencia.
+\item \textbf{pubic or groin area:} identifica la localización anatómica del problema descrito.
+\item \textbf{resolved on its own:} describe la evolución del problema y su resolución espontánea.
+\item \textbf{physical check:} recoge la evaluación física recomendada en la respuesta.
+\item \textbf{Surgeon:} identifica al cirujano como uno de los profesionales mencionados.
+\item \textbf{GP doctor:} identifica al médico general como otro de los profesionales mencionados.
+\end{itemize}
+\endgroup
+
+Cada entidad se conserva con un identificador, un peso y una representación léxica que incluye formas normalizadas, lemas, alias y términos considerados esenciales para reconocerla. A partir de esa información se preparan criterios de presencia y, cuando corresponde, criterios de cantidades, postura, relaciones y acciones. Los primeros comprueban valores y unidades asociados a un concepto, mientras que la postura busca distinguir, por ejemplo, una posibilidad de una recomendación. Por su parte, las relaciones se aproximan mediante la presencia de conceptos en una misma oración y su cercanía en tokens, y las acciones se reconocen mediante expresiones compatibles con la familia de acción esperada.
+
+Estas comprobaciones buscan conservar algo más que una lista de palabras, aunque su implementación sigue siendo una aproximación. La aparición de una expresión de posibilidad en una oración no garantiza que modifique el diagnóstico correcto, del mismo modo que dos conceptos cercanos no necesariamente mantienen la relación clínica esperada. Además, la extracción puede conservar fragmentos poco pertinentes, como ocurre en la misma muestra con una referencia a una consulta de seguimiento de pago. Por ello, la selección de entidades también debe revisarse y no puede asumirse que toda expresión extraída constituye un criterio clínico útil.
+
+
+En la segunda etapa, la construcción parte de las obligaciones explícitas de la pregunta y utiliza la respuesta de referencia para fundamentar los criterios. El objetivo es exigir el contenido necesario para resolver la consulta, sin convertir cada detalle de la referencia en un requisito adicional. Por ello, se identifica si la tarea solicita una respuesta directa, una explicación o varias acciones y se vincula cada criterio con la obligación que evalúa.
+
+Cada criterio evalúa un requisito concreto de la consulta y se vincula con un fragmento de la referencia. También indica qué respuestas equivalentes se aceptan y qué menciones resultarían insuficientes. Por ejemplo, si la consulta pide identificar una sustancia cuyo nivel está elevado, nombrarla sin indicar el sentido del cambio no cubre el requisito completo. El criterio conserva esa relación y su polaridad, y registra la certeza, las condiciones temporales o los parámetros cuando son necesarios para interpretar la respuesta. Si la referencia no permite fundamentar un requisito solicitado, se registra la falta de cobertura.
+
+La generación y la revisión mediante modelos de lenguaje se acompañan de comprobaciones estructurales y de correspondencia con la evidencia. Este control busca mejorar la fidelidad de la rúbrica a la consulta y a la referencia, aunque no constituye una revisión médica de su corrección. Los criterios aceptados se clasifican como esenciales o adicionales y se puntúan con la formulación correspondiente a la segunda etapa, descrita en la sección~\ref{sec:metodo-recompensa}.

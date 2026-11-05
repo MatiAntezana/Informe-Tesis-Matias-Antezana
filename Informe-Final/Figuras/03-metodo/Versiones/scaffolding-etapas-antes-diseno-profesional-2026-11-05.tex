@@ -1,0 +1,34 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\definecolor{hintink}{HTML}{29465B}
+\definecolor{hintblue}{HTML}{EDF3F8}
+\definecolor{hintgold}{HTML}{FAF1DE}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>=Stealth,
+ box/.style={draw=hintink!70,rounded corners=3pt,align=center,inner sep=7pt,font=\small,line width=.7pt},
+ flow/.style={->,draw=hintink,line width=.8pt},
+ stage/.style={box,fill=hintblue,text width=2.15cm,minimum height=1.7cm}]
+\node[box,fill=hintgold,text width=4.6cm] (llm) at (6.5,4.3)
+ {LLM\\Generación de rúbricas};
+\node[box,fill=hintblue,text width=4.6cm] (grpo) at (6.5,2.5)
+ {Entrenamiento con GRPO};
+\draw[flow] (llm.south) -- (grpo.north);
+\node[stage] (s1) at (.5,-.25)
+ {Etapa 1\\[6pt]100\% de entidades\\en el input};
+\node[stage] (s2) at (3.5,-.25)
+ {Etapa 2\\[6pt]75\% de entidades\\en el input};
+\node[stage] (s3) at (6.5,-.25)
+ {Etapa 3\\[6pt]50\% de entidades\\en el input};
+\node[stage] (s4) at (9.5,-.25)
+ {Etapa 4\\[6pt]25\% de entidades\\en el input};
+\node[stage] (s5) at (12.5,-.25)
+ {Etapa 5\\[6pt]0\% de entidades\\en el input};
+\draw[draw=hintink,line width=.8pt] (grpo.south) -- (6.5,1.45);
+\draw[draw=hintink,line width=.8pt] (.5,1.45) -- (12.5,1.45);
+\foreach \stage in {s1,s2,s3,s4,s5} {
+ \draw[draw=hintink,line width=.8pt] (\stage.north) -- (\stage.north |- 0,1.45);
+}
+\end{tikzpicture}%
+}
+\endgroup

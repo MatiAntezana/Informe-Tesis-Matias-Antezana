@@ -1,0 +1,31 @@
+\subsection{Función de pérdida y actualización de parámetros}
+\label{sec:sft-actualizacion}
+Para el caso en que se supervisan únicamente los tokens de respuesta, la función de pérdida puede escribirse como el logaritmo de verosimilitud negativo promediado sobre esos tokens,
+\begin{equation}
+\mathcal{L}_{\mathrm{SFT}}(\theta)=
+-\frac{1}{\sum_{i=1}^{N}T_i}
+\sum_{i=1}^{N}\sum_{t=1}^{T_i}
+\log p_\theta(y_{i,t}\mid x_i,y_{i,<t}).
+\label{eq:sft}
+\end{equation}
+Esta expresión corresponde a una entropía cruzada con el token de referencia como etiqueta y penaliza que el modelo le asigne una probabilidad baja. En esta formulación, el promedio por tokens hace que una respuesta más larga aporte más términos al conjunto, por lo que no equivale a promediar primero la pérdida de cada respuesta y luego dar el mismo peso a todos los ejemplos. La maximización de probabilidades condicionales constituye el objetivo supervisado, independientemente de qué parámetros se permitan modificar~\cite{hu2022lora}.
+
+Para expresar explícitamente la selección de posiciones, sea $z_i$ la secuencia completa del ejemplo y $m_{i,t}\in\{0,1\}$ una máscara que indica si el token en la posición $t$ contribuye a la pérdida. Entonces,
+\begin{equation}
+\mathcal{L}_{\mathrm{SFT}}(\theta)=
+-\frac{\sum_{i,t}m_{i,t}\log p_\theta(z_{i,t}\mid z_{i,<t})}
+{\sum_{i,t}m_{i,t}},
+\label{eq:sft-mascara}
+\end{equation}
+siempre que exista al menos un token supervisado. En el ejemplo de la figura \ref{fig:sft-secuencia}, la máscara vale uno en la respuesta y cero en el contexto y el padding. Esta máscara de pérdida cumple una función distinta de la máscara causal de atención, ya que un token excluido como objetivo puede seguir proporcionando contexto a las predicciones siguientes.
+
+El entrenamiento procesa un batch, calcula las probabilidades y la pérdida, obtiene sus gradientes por retropropagación y aplica una actualización sobre el subconjunto entrenable $\theta_{\mathrm{train}}$. Una representación básica mediante descenso de gradiente es
+\begin{equation}
+\theta_{\mathrm{train}}\leftarrow\theta_{\mathrm{train}}
+-\eta\,\nabla_{\theta_{\mathrm{train}}}\mathcal{L}_{\mathrm{SFT}},
+\label{eq:sft-actualizacion}
+\end{equation}
+donde $\eta$ es la tasa de aprendizaje. Esta expresión explica la dirección de la actualización, aunque optimizadores como AdamW utilizan además estimaciones de momentos del gradiente y decaimiento de pesos separado de la actualización adaptativa, por lo que su operación no se reduce a ese paso básico~\cite{loshchilov2019adamw}.
+
+El microbatch determina cuántos ejemplos se procesan simultáneamente, mientras que la acumulación de gradientes combina varias operaciones antes de actualizar los parámetros y permite aumentar el batch efectivo bajo restricciones de memoria. Por otra parte, una época corresponde a un recorrido por el conjunto de entrenamiento y la tasa de aprendizaje controla la escala de los cambios, por lo que estas decisiones deben interpretarse junto con la pérdida de validación, cuyo descenso indica un mejor ajuste a las referencias de ese conjunto.
+

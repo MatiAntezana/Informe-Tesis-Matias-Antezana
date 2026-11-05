@@ -1,0 +1,25 @@
+\begingroup
+\singlespacing
+\begin{tikzpicture}[>=Stealth,
+ block/.style={draw,rounded corners=2pt,minimum width=3cm,minimum height=0.6cm,font=\small,align=center},
+ note/.style={font=\small,align=center},
+ adapter/.style={draw,fill=blue!20,minimum width=1cm,minimum height=0.55cm,font=\small}]
+\node[note] at (0,1) {\textbf{Ajuste completo}};
+\node[note] at (4.3,1) {\textbf{Ajuste parcial}};
+\node[note] at (9.2,1) {\textbf{LoRA}};
+\foreach \j in {0,...,3} {
+ \node[block,fill=blue!20] at (0,-0.85*\j) {Bloque \number\numexpr\j+1\relax};
+ \node[block,fill=gray!15] (l\j) at (8.7,-0.85*\j) {Bloque \number\numexpr\j+1\relax};
+ \node[adapter] (a\j) at (11,-0.85*\j) {$A,B$};
+ \draw[->] (a\j.west)--(l\j.east);
+}
+\node[block,fill=gray!15] at (4.3,0) {Bloque 1};
+\node[block,fill=gray!15] at (4.3,-0.85) {Bloque 2};
+\node[block,fill=blue!20] at (4.3,-1.7) {Bloque 3};
+\node[block,fill=blue!20] at (4.3,-2.55) {Bloque 4};
+\node[draw,fill=blue!20,minimum width=0.5cm,minimum height=0.35cm] at (2,-3.6) {};
+\node[note,anchor=west] at (2.4,-3.6) {Entrenables};
+\node[draw,fill=gray!15,minimum width=0.5cm,minimum height=0.35cm] at (6.6,-3.6) {};
+\node[note,anchor=west] at (7,-3.6) {Congelados};
+\end{tikzpicture}
+\endgroup

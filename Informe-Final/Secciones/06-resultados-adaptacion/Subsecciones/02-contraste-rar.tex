@@ -1,0 +1,10 @@
+\section{Contraste de la metodología con RaR}
+\label{sec:comparacion-rar}
+\label{sec:resultados-modelos}
+La segunda etapa parte de Qwen2.5-3B SFT45k y estudia su adaptación con datos procedentes de RaR. Compararlo con Qwen2.5-7B SFT-90 o con su adaptación mediante GRPO no permitiría aislar el efecto de la metodología, porque también cambian la capacidad del modelo, la supervisión y los datos de aprendizaje. Por esa razón, los modelos de ambas etapas no son comparables entre sí.
+
+La función de los experimentos iniciales es aportar evidencia sobre la metodología y orientar su refinamiento. Para estudiar los efectos de las nuevas rúbricas o de su puntuación, las comparaciones deberán realizarse dentro de la segunda etapa, manteniendo constantes las condiciones que no sean objeto del análisis. A su vez, el contraste con los resultados publicados de RaR estará condicionado por la equivalencia que pueda comprobarse en el protocolo, como se establece en la sección~\ref{sec:protocolo-segunda-etapa}.
+
+El contraste con RaR se centra en la construcción de las rúbricas y en la forma de convertir sus evaluaciones en recompensa~\cite{gunjal2025rar}. Para interpretar las puntuaciones deben cotejarse el modelo, el SFT previo, los datos utilizados en RL y las condiciones del benchmark, la generación y el juez. Las diferencias que no puedan mantenerse constantes delimitan el alcance de esa comparación.
+
+Los registros del piloto permiten analizar el entrenamiento descrito en la sección~\ref{sec:refinamiento-entrenamiento-rar}. La evaluación externa de esta etapa y su contraste numérico con los resultados publicados de RaR no se presentan todavía; por ello, las puntuaciones de HealthBench de la sección anterior corresponden únicamente a las pruebas iniciales con Qwen2.5-7B.

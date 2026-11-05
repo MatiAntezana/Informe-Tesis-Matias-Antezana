@@ -1,0 +1,20 @@
+\section{Evaluación de la adaptación}
+\label{sec:marco-evaluacion}
+La evaluación externa examina las respuestas ante consultas distintas de las utilizadas para entrenar y permite estudiar si los cambios se mantienen fuera de la señal de recompensa. Su interpretación requiere identificar el benchmark, las condiciones de generación y el evaluador, además de definir cómo se agregan los criterios.
+
+\subsection{HealthBench y evaluación por conversación}
+\label{sec:marco-healthbench}
+HealthBench es un benchmark desarrollado por OpenAI para evaluar respuestas médicas abiertas mediante criterios específicos de cada conversación, elaborados por profesionales médicos~\cite{arora2025healthbench}. Además de su versión general, el benchmark incluye las variantes HealthBench Hard y HealthBench Consensus, por lo que es necesario identificar de cuál procede cada evaluación.
+
+El procedimiento conserva la conversación y su identificador, genera una respuesta al último mensaje del usuario y evalúa cada criterio a partir de esa respuesta y del contexto disponible. Las respuestas se guardan antes de calificarlas, mientras que las decisiones del juez y sus explicaciones se almacenan en archivos separados, lo que permite revisar una decisión individual o recalcular las métricas sin volver a generar el texto. Como muestra la figura \ref{fig:protocolo-evaluacion}, la rúbrica de HealthBench se proporciona únicamente al juez, de modo que el modelo evaluado responde sin acceder a esos criterios. Estas rúbricas pertenecen a la evaluación externa y deben distinguirse de las utilizadas como recompensa durante el entrenamiento.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{Figuras/02-marco-teorico/06-evaluacion/evaluacion-protocolo.png}
+\caption{Evaluación de respuestas mediante las rúbricas de HealthBench y un modelo juez.}
+\label{fig:protocolo-evaluacion}
+\end{figure}
+
+Las condiciones concretas de la muestra, la generación y el juez del proyecto se describen en la sección~\ref{sec:protocolo-experimental}.
+
+\input{Secciones/02-marco-teorico/Subsecciones/06-evaluacion/02-metricas-y-comparacion-de-modelos}%

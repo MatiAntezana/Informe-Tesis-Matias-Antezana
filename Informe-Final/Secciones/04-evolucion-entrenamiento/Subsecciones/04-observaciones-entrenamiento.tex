@@ -1,0 +1,7 @@
+\section{Del entrenamiento inicial al refinamiento del método}
+\label{sec:observaciones-entrenamiento}
+El SFT inicial muestra una separación entre la pérdida de entrenamiento y la de validación en las últimas épocas. Este comportamiento justifica observar ambos conjuntos al revisar la duración del ajuste, en lugar de seguir únicamente la pérdida calculada durante las actualizaciones.
+
+En el piloto posterior, la caída de recompensa al retirar las ayudas señala otra dificultad: obtener una respuesta bien puntuada cuando se proporcionan conceptos no equivale a recuperarlos a partir de la consulta. La validación sin ayudas permite seguir esa diferencia durante todo el recorrido, incluso en las etapas donde la recompensa de entrenamiento permanece alta.
+
+La evaluación inicial de respuestas también motivó revisar qué se exige en cada rúbrica. La segunda etapa vincula los criterios con las obligaciones de la pregunta y conserva evidencia de la referencia, buscando evitar que detalles secundarios se conviertan en requisitos. El capítulo~\ref{ch:resultados-adaptacion} examina las respuestas mediante HealthBench y distingue ese análisis del contraste con el trabajo externo.

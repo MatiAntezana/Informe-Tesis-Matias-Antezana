@@ -1,0 +1,7 @@
+\subsection{Elección de las arquitecturas}
+\label{sec:metodo-arquitecturas}
+Se utilizan dos tamaños de la familia Qwen2.5, de 7B y 3B parámetros~\cite{qwen2024qwen25}. El alcance de las comparaciones se establece en la sección~\ref{sec:resultados-modelos}.
+
+En la primera etapa, Qwen2.5-7B Base proporciona el punto de partida para obtener el modelo SFT-90 y estudiar después su adaptación con GRPO. Durante GRPO se actualizan los parámetros de LoRA asociados a las proyecciones de atención y del bloque de transformación, mientras que los embeddings y la cabeza de salida guardados con el adaptador se congelan en esta etapa.
+
+Para estudiar las nuevas rúbricas y recompensas se utiliza Qwen2.5-3B, buscando reducir el costo de los experimentos. Se parte del checkpoint SFT45k adaptado mediante QLoRA y actualización de embeddings. El adaptador supervisado se fusiona con el modelo base y se conservan los embeddings adaptados; a partir de esa misma versión se construyen la política entrenable y la referencia congelada utilizada para la regularización KL. Durante GRPO se incorporan nuevos adaptadores LoRA y se entrenan también los embeddings, manteniendo el enlace con la cabeza de salida cuando corresponde.

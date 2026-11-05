@@ -1,0 +1,28 @@
+\section{Retirada progresiva de ayudas durante el entrenamiento}
+\label{sec:metodo-ayudas}
+La retirada progresiva de ayudas, denominada scaffold, presenta al modelo parte de las entidades esperadas junto con la consulta al comienzo del entrenamiento. Su propósito es facilitar la incorporación del contenido del dominio y aumentar después la exigencia de recuperación autónoma, por lo que las entidades visibles se reducen a medida que avanza el calendario. La rúbrica completa permanece disponible para evaluar la respuesta, aunque el modelo recibe únicamente la fracción de conceptos habilitada para esa presentación.
+
+El calendario establece una fracción de entidades visibles para cada etapa, que se reduce hasta llegar a consultas sin ayudas. Para ello, se asigna un orden a las entidades de cada ejemplo y se conservan subconjuntos cada vez menores, manteniendo la rúbrica completa para evaluar todas las respuestas. La duración del calendario y las reglas de selección empleadas en el experimento central se detallan en la sección~\ref{sec:protocolo-configuracion}.
+
+La figura~\ref{fig:scaffolding-etapas} ilustra este mecanismo con el calendario definido en el diseño posterior V29. En esa implementación, un modelo de lenguaje genera ayudas breves a partir de los criterios y de la evidencia de la respuesta de referencia, y una revisión mediante LLM comprueba su correspondencia con esas fuentes antes de incorporarlas al entrenamiento. Las ayudas aceptadas se ordenan de manera determinista y, en cada etapa, se conserva la cantidad correspondiente a la tasa de retención, redondeada hacia arriba. Por ejemplo, cuatro ayudas dan lugar a subconjuntos de cuatro, tres, dos, una y ninguna ayuda para las tasas de 100\%, 75\%, 50\%, 25\% y 0\%, respectivamente. Este ejemplo representa el diseño de V29; el calendario del experimento central evaluado en este informe se especifica en la sección~\ref{sec:protocolo-configuracion}.
+
+\begin{figure}[htbp]
+\centering
+\input{Figuras/03-metodo/scaffolding-etapas}
+\caption{Retirada progresiva de ayudas en cinco etapas de entrenamiento.}
+\label{fig:scaffolding-etapas}
+\end{figure}
+
+En la formulación inicial, la recompensa distingue entre conceptos visibles y ocultos para dar mayor peso a la recuperación sin ayuda. Si $w_e$ es el peso base de la entidad $e$, $m_e$ su puntuación de detección y $\lambda_e$ es un multiplicador que toma un valor mayor para las entidades ocultas que para las visibles, el componente de entidades se calcula como
+\begin{equation}
+E_i(y)=\min\!\left(1,
+\frac{\sum_e w_e\lambda_e m_e}{\sum_e w_e\lambda_e}
++\eta\,\frac{H_i^{\mathrm{rec}}}{H_i}\right),
+\label{eq:metodo-entidades-ocultas}
+\end{equation}
+donde $H_i$ es la cantidad de entidades ocultas, $H_i^{\mathrm{rec}}$ la cantidad recuperada y $\eta$ controla la bonificación por su recuperación. El término adicional se toma como cero cuando no hay entidades ocultas. Esta formulación añade una bonificación máxima de $\eta$ al componente, que luego se combina con los restantes mediante la ecuación~\ref{eq:metodo-recompensa}.
+
+El mecanismo busca que recuperar información no presentada resulte más valioso que repetir las ayudas, aunque su efecto depende de la composición de cada ejemplo. Cuando todas las entidades están ocultas, el multiplicador común se cancela en el cociente ponderado y la diferencia adicional procede de la bonificación. Por ello, la asimetría tiene un efecto relativo especialmente en las etapas con entidades visibles y ocultas. Asimismo, las respuestas generadas con ayudas deben distinguirse de las producidas sin ellas al analizar el comportamiento del modelo.
+
+
+En el piloto posterior, las ayudas se vinculan a los criterios y a la evidencia de referencia y se retiran siguiendo el calendario de cinco etapas de la figura~\ref{fig:scaffolding-etapas}. Las tasas representan retención nominal: el redondeo hacia arriba puede producir la misma cantidad de ayudas en etapas consecutivas cuando hay pocas disponibles. La validación se realiza sin ayudas, mientras que el juez utiliza la rúbrica completa y no recibe las ayudas visibles en el prompt del modelo. A diferencia de la formulación inicial, la recompensa de la ecuación~\ref{eq:metodo-recompensa-piloto} conserva los pesos de los criterios durante las etapas y no aplica el multiplicador por entidades ocultas de la ecuación~\ref{eq:metodo-entidades-ocultas}.

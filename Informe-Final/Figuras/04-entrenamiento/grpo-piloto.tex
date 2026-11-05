@@ -1,0 +1,26 @@
+\begingroup
+\singlespacing
+\shorthandoff{<>}
+\begin{tikzpicture}
+\begin{axis}[width=.95\textwidth,height=6.6cm,xmin=0,xmax=1500,ymin=0,ymax=1.13,
+ xlabel={Pasos de optimización},ylabel={Recompensa},
+ grid=major,grid style={gray!15},axis lines=left,
+ tick label style={font=\footnotesize},label style={font=\small},
+ legend style={font=\footnotesize,draw=none,at={(.02,.04)},anchor=south west,fill=white},
+ scaled ticks=false,xticklabel style={/pgf/number format/1000 sep={.}},xtick={0,300,600,900,1200,1500},ytick={0,.2,.4,.6,.8,1}]
+\foreach \x in {300,600,900,1200} {
+ \edef\temp{\noexpand\draw[gray!55,dashed] (axis cs:\x,0) -- (axis cs:\x,1.04);}\temp
+}
+\node[font=\scriptsize,text=gray!80!black] at (axis cs:150,1.07) {100\%};
+\node[font=\scriptsize,text=gray!80!black] at (axis cs:450,1.07) {75\%};
+\node[font=\scriptsize,text=gray!80!black] at (axis cs:750,1.07) {50\%};
+\node[font=\scriptsize,text=gray!80!black] at (axis cs:1050,1.07) {25\%};
+\node[font=\scriptsize,text=gray!80!black] at (axis cs:1350,1.07) {0\%};
+\addplot[color=blue!15,line width=.3pt,forget plot] table[x=step,y=reward] {Figuras/04-entrenamiento/grpo-piloto-train.dat};
+\addplot[color={rgb,255:red,53;green,95;blue,128},line width=1.1pt] table[x=step,y=smooth] {Figuras/04-entrenamiento/grpo-piloto-train.dat};
+\addlegendentry{Entrenamiento (EMA)}
+\addplot[color={rgb,255:red,179;green,104;blue,62},mark=*,mark size=1.7pt,line width=1pt] table[x=step,y=reward] {Figuras/04-entrenamiento/grpo-piloto-validation.dat};
+\addlegendentry{Validación sin ayudas}
+\end{axis}
+\end{tikzpicture}
+\endgroup

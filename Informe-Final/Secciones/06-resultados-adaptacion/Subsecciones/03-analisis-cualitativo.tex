@@ -1,0 +1,64 @@
+\section{Aciertos y errores en las respuestas generadas}
+\label{sec:resultados-cualitativos}
+
+El cuadro~\ref{tab:resultados-ejemplos} reúne cuatro ejemplos de diferencias favorables y desfavorables al modelo con GRPO, mediante fragmentos originales en inglés contrastados con las respuestas completas.
+
+\begingroup
+\renewcommand{\tablename}{Cuadro}
+\singlespacing
+\setlength{\parskip}{3pt}
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{|>{\centering\arraybackslash}p{0.27\textwidth}|>{\centering\arraybackslash}p{0.325\textwidth}|>{\centering\arraybackslash}p{0.325\textwidth}|}
+\caption{Ejemplos de diferencias entre las respuestas evaluadas.}
+\label{tab:resultados-ejemplos}\\
+\hline
+\textbf{Aspecto evaluado} & \textbf{SFT-90} & \textbf{SFT-90 + GRPO} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Aspecto evaluado} & \textbf{SFT-90} & \textbf{SFT-90 + GRPO} \\
+\hline
+\endhead
+\hline
+\multicolumn{3}{|c|}{Continúa en la página siguiente.} \\
+\hline
+\endfoot
+\hline
+\endlastfoot
+\textbf{Seguimiento de instrucciones}\par
+Recomendaciones de dieta, ejercicio y consulta médica ante calambres.
+&
+\enquote{Take a good diet rich in calcium and magnesium.}
+&
+\enquote{Stretching exercises before and after physical activity can also help prevent muscle cramps.}
+\\[0.3\baselineskip]
+\hline
+\textbf{Comprensión del contexto}\par
+Indagación sobre la historia del problema de visión periférica borrosa.
+&
+\enquote{Please provide more details or rephrase your question.}
+&
+\enquote{Are you experiencing any other symptoms such as headaches, dizziness, or nausea?}
+\\[0.3\baselineskip]
+\hline
+\textbf{Adecuación de la extensión}\par
+Explicar brevemente el significado de contraindicación.
+&
+\enquote{Contraindication refers to a condition or factor that makes a particular treatment or procedure unsuitable or risky for a patient.}
+&
+\enquote{contraindications may include severe renal impairment, active infection, or other medical conditions}
+\\[0.3\baselineskip]
+\hline
+\textbf{Criterio negativo}\par
+Recomendaciones sin evidencia para prevenir el cólera.
+&
+\enquote{handwashing with soap, can help prevent the spread of the disease.}
+&
+\enquote{Adding a teaspoon of salt and a teaspoon of sugar for every 5 liters of water can help prevent diarrhea.}
+\\
+\end{longtable}
+\endgroup
+
+En la consulta sobre calambres, SFT incluyó dieta y consulta médica, y SFT + GRPO añadió ejercicios para cubrir las tres indicaciones. Ante la visión borrosa, formuló preguntas sobre síntomas asociados. Sin embargo, también agregó ejemplos innecesarios para definir contraindicación y una medida sin evidencia para el cólera, según el juez local.
+
+Tras la adaptación supervisada, GRPO comparó varias respuestas por consulta y favoreció aquellas con mayor recompensa relativa, calculada mediante rúbricas que valoraron la recuperación de conceptos de referencia. La retirada gradual de ayudas buscó favorecer respuestas autónomas, un mecanismo compatible con la mayor cobertura observada, aunque su efecto causal no quedó demostrado.

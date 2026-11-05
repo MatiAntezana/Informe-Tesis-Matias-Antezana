@@ -1,0 +1,6 @@
+\section{Evidencia sobre los alcances y límites}
+\label{sec:contribuciones-evidencia}
+
+Se evaluó Qwen2.5-7B SFT-90 frente a su adaptación posterior con GRPO sobre los mismos 500 casos de HealthBench. El modelo con GRPO cumplió más criterios positivos, pero también activó más criterios negativos y obtuvo una menor puntuación en calidad de comunicación. Estos resultados muestran que aumentar la cobertura de información puede introducir otros errores, por lo que la recompensa necesita considerar ambos efectos. La interpretación sigue limitada por las diferencias entre los jueces utilizados y los posibles sesgos de la evaluación local.
+
+La combinación de mayor cobertura y más penalizaciones motivó revisar qué requisitos se incluyen en las rúbricas y cómo se ponderan en la recompensa de la segunda etapa.

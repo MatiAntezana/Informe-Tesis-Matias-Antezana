@@ -1,0 +1,115 @@
+\documentclass[12pt,a4paper]{report}
+
+\usepackage[utf8]{inputenc}
+\usepackage[OT1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup[figure]{font=normalsize,labelfont=bf,labelsep=colon,justification=centering,singlelinecheck=false}
+\captionsetup[table]{labelfont=bf,labelsep=colon,justification=centering,singlelinecheck=false}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta,positioning,babel}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{array}
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\usepackage{amsmath,amssymb}
+\usepackage{enumitem}
+% Viñetas cuadradas pequeñas, con el texto a 2 cm del margen del cuerpo.
+\setlist[itemize]{label=\raisebox{0.2ex}{\rule{3.5pt}{3.5pt}},leftmargin=2cm,labelsep=0.25cm,itemsep=0.5\baselineskip,parsep=0pt,topsep=0.5\baselineskip,partopsep=0pt}
+\usepackage{microtype}
+\usepackage{csquotes}
+\DeclareQuoteStyle{spanish}{\textquotedblleft}{\textquotedblright}{\textquoteleft}{\textquoteright}
+\usepackage{xurl}
+\usepackage{titlesec}
+\setlength{\parskip}{0.5\baselineskip plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}
+\widowpenalty=10000
+\clubpenalty=10000
+\usepackage[backend=bibtex,bibstyle=numeric,citestyle=ieee,sorting=none,giveninits=true,maxbibnames=10,minbibnames=6]{biblatex}
+\addbibresource{bibliografia.bib}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\AtBeginBibliography{%
+  \hypersetup{urlcolor=blue,citecolor=black,linkcolor=black}%
+  \setlength{\bibitemsep}{0.35\baselineskip}%
+}
+\setcounter{tocdepth}{2}
+\titleformat{\chapter}[hang]{\normalfont\Large\bfseries\raggedright}{\thechapter.}{0.6em}{}
+\titleformat{\section}{\normalfont\large\bfseries\raggedright}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries\raggedright}{\thesubsection.}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\raggedright}{\thesubsubsection.}{0.6em}{}
+\titlespacing*{\chapter}{0pt}{-15pt}{24pt}
+\titlespacing*{\section}{0pt}{24pt plus 3pt minus 2pt}{12pt}
+\titlespacing*{\subsection}{0pt}{16pt plus 2pt minus 1pt}{10pt}
+\titlespacing*{\subsubsection}{0pt}{12pt plus 2pt minus 1pt}{8pt}
+
+\addto\captionsspanish{%
+  \renewcommand{\listtablename}{Lista de Tablas}%
+  \renewcommand{\listfigurename}{Lista de Figuras}%
+}
+\makeatletter
+\renewcommand{\listoftables}{%
+  \chapter*{\listtablename}%
+  \addcontentsline{toc}{chapter}{\listtablename}%
+  \@starttoc{lot}%
+}
+\renewcommand{\listoffigures}{%
+  \chapter*{\listfigurename}%
+  \addcontentsline{toc}{chapter}{\listfigurename}%
+  \@starttoc{lof}%
+}
+\makeatother
+
+\begin{document}
+\raggedbottom
+\pagenumbering{roman}
+\begin{titlepage}
+\setlength{\parskip}{0pt}
+\centering
+\includegraphics[width=0.39\textwidth]{Figuras/00-portada/logo_azul_vert_hipng.png}\par\vspace{0.6cm}
+{\Large Universidad de San Andrés\par}\vspace{0.65cm}
+{\large Escuela de Ingeniería\par}\vspace{0.65cm}
+{\large Ingeniería en Inteligencia Artificial\par}\vspace{1.1cm}
+\rule{\textwidth}{0.8pt}\par\vspace{0.5cm}
+{\Large Trabajo de Graduación\par}\vspace{0.8cm}
+{\LARGE\bfseries Adaptación de modelos de lenguaje a dominios abiertos: aprendizaje por refuerzo guiado por rúbricas extraídas y scaffolding\par}\vspace{0.65cm}
+\rule{\textwidth}{0.8pt}\par
+\vfill
+{\raggedright
+\textbf{Autor:} Matías Luciano Antezana\par\vspace{0.4cm}
+\textbf{Legajo:} 34581\par\vspace{0.5cm}
+\textbf{Mentor:} Dr. Luciano Manuel del Corro\par\vspace{0.3cm}
+\textbf{Comentor:} Andrés Arpi\par}
+\vfill
+Victoria, Buenos Aires\par\vspace{0.5cm}
+Noviembre de 2026
+\end{titlepage}
+
+\input{Secciones/00-preliminares/seccion}
+\tableofcontents
+\clearpage
+\listoftables
+\clearpage
+\listoffigures
+\clearpage
+\input{Secciones/00-simbolos-abreviaciones/seccion}
+\clearpage
+\pagenumbering{arabic}
+\input{Secciones/01-introduccion/seccion}
+\input{Secciones/02-marco-teorico/seccion}
+\input{Secciones/05-metodo-propuesto/seccion}
+\input{Secciones/04-evolucion-entrenamiento/seccion}
+\input{Secciones/06-resultados-adaptacion/seccion}
+\input{Secciones/07-contribuciones/seccion}
+\cleardoublepage
+\chapter*{Bibliografía}
+\addcontentsline{toc}{chapter}{Bibliografía}
+\printbibliography[heading=none]
+\end{document}

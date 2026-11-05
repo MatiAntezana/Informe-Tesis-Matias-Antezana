@@ -1,0 +1,15 @@
+\section{Objetivos y aportes: Metodología de adaptación de dominio mediante rúbricas y scaffolding progresivo}
+
+El objetivo de este trabajo es desarrollar y evaluar una metodología de adaptación de modelos de lenguaje a dominios abiertos mediante aprendizaje por refuerzo guiado por rúbricas extraídas automáticamente de respuestas de referencia.
+
+A partir de este objetivo general, se plantean los siguientes objetivos específicos:
+
+\begin{itemize}
+\item \textbf{Establecer una adaptación inicial al dominio:} ajustar un modelo de lenguaje mediante entrenamiento supervisado con consultas y respuestas del dominio, reservando una partición independiente para construir las rúbricas del entrenamiento posterior.
+\item \textbf{Construir una señal de recompensa basada en rúbricas:} extraer conceptos relevantes de las respuestas de referencia de la partición reservada y organizarlos en criterios específicos por consulta, combinando comprobaciones mediante código con evaluación semántica.
+\item \textbf{Integrar las rúbricas y el scaffolding en la optimización con GRPO:} implementar un entrenamiento por refuerzo que retire progresivamente las ayudas proporcionadas al modelo, manteniendo la rúbrica completa para evaluar sus respuestas y una recompensa que favorezca la recuperación de información no presentada como ayuda.
+\item \textbf{Evaluar los alcances y las limitaciones de la metodología:} examinar inicialmente el modelo adaptado mediante SFT y su posterior optimización mediante GRPO utilizando HealthBench como evaluación externa, analizando los cambios por dimensiones y ejemplos de respuestas que permitan identificar mejoras y regresiones.
+\item \textbf{Refinar las rúbricas y contrastar su uso como recompensa:} estudiar una nueva construcción de criterios a partir de preguntas y respuestas procedentes de RaR y variantes de puntuación, documentando las diferencias de modelo, datos y evaluación que condicionan el contraste con ese antecedente.
+\end{itemize}
+
+Se conservan las configuraciones y los registros de entrenamiento y evaluación para revisar las decisiones experimentales.

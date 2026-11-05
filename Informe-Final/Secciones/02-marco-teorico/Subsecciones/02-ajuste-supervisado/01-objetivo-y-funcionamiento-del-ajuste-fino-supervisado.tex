@@ -1,0 +1,10 @@
+\subsection{Objetivo y funcionamiento del ajuste fino supervisado}
+\label{sec:sft-objetivo}
+El ajuste fino supervisado, conocido como Supervised Fine-Tuning (SFT), utiliza demostraciones para orientar un modelo hacia una tarea, un formato de interacción o un dominio. Su punto de partida son parámetros obtenidos durante el preentrenamiento, que se ajustan con un conjunto de ejemplos de entrada y respuesta~\cite{ouyang2022instructgpt}, representado como
+\begin{equation}
+\mathcal{D}_{\mathrm{SFT}}=\{(x_i,y_i)\}_{i=1}^{N},
+\label{eq:datos-sft}
+\end{equation}
+donde $x_i$ reúne la instrucción, la consulta y el contexto disponible, $y_i$ es la respuesta de referencia y $N$ indica la cantidad de ejemplos. El entrenamiento busca aumentar la probabilidad de esas respuestas condicionadas a sus entradas, por lo que las demostraciones determinan qué contenido y qué formas de respuesta se favorecen.
+
+

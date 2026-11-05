@@ -1,0 +1,13 @@
+\subsection{Fundamentos del aprendizaje por refuerzo aplicado al lenguaje}
+\label{sec:rl-lenguaje}
+El aprendizaje por refuerzo estudia cómo un agente modifica su comportamiento a partir de las consecuencias de sus acciones al interactuar con un entorno, buscando maximizar la recompensa acumulada esperada~\cite{sutton2018reinforcement}. Para elegir una acción, el agente utiliza una política que relaciona el estado disponible con las acciones posibles, mientras que el entorno determina la transición al estado siguiente y las señales de recompensa. De este modo, el aprendizaje depende tanto de las decisiones tomadas como de la evaluación de sus consecuencias, que puede recibirse inmediatamente o después de varias acciones.
+
+En la generación de texto, el modelo de lenguaje actúa como agente y su distribución de probabilidades constituye la política, representada por $\pi_\theta$, donde $\theta$ reúne los parámetros entrenables. Si $x$ es la consulta y $y_{<t}$ contiene los tokens ya generados, el estado en el paso $t$ puede escribirse como $s_t=(x,y_{<t})$, mientras que la acción consiste en seleccionar el token siguiente $y_t$. Por lo tanto, cada elección amplía el contexto disponible para la próxima, y la sucesión de acciones forma una trayectoria que termina cuando se genera el token de fin o se alcanza el límite de longitud. En este caso, el entorno comprende el procedimiento que actualiza el contexto y el mecanismo que evalúa la respuesta, sin que sea necesario interactuar con un paciente real para entrenar sobre consultas almacenadas~\cite{ouyang2022instructgpt}.
+
+Cuando se asigna una recompensa al finalizar la respuesta, un objetivo simplificado consiste en aumentar su valor esperado sobre las consultas de entrenamiento,
+\begin{equation}
+J(\theta)=\mathbb{E}_{x\sim\mathcal{D},\,y\sim\pi_\theta(\cdot\mid x)}[R(x,y)],
+\label{eq:objetivo-rl}
+\end{equation}
+donde $\mathcal{D}$ representa la distribución de consultas y $R(x,y)$ evalúa la respuesta generada. Esta expresión no incluye todavía las restricciones de estabilidad del algoritmo y tampoco exige una respuesta de referencia única, aunque una referencia puede intervenir en la evaluación. Además de recompensas finales, es posible introducir señales sobre pasos intermedios, lo que permite distinguir la evaluación del resultado de la evaluación del proceso seguido para obtenerlo~\cite{lightman2023verify}.
+
